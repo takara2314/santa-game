@@ -113,11 +113,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -143,7 +145,10 @@
     <Image Include="App\example\texture\uv.png" />
     <Image Include="App\example\texture\wood.jpg" />
     <Image Include="App\example\windmill.png" />
+    <Image Include="App\ground.png" />
     <Image Include="App\icon.ico" />
+    <Image Include="App\santa.png" />
+    <Image Include="App\santa_front.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
@@ -301,6 +306,7 @@
     <Media Include="App\example\video\river.mp4" />
   </ItemGroup>
   <ItemGroup>
+    <Font Include="App\001Shirokuma-Regular.otf" />
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
     <Font Include="App\example\font\RocknRoll\RocknRollOne-Regular.ttf" />
   </ItemGroup>
@@ -313,7 +319,10 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common.hpp" />
+    <ClInclude Include="Game.hpp" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Title.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\example\obj\blacksmith.obj">
