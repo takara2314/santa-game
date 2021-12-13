@@ -15,5 +15,8 @@ struct GameData
 	int32 highScore = 0;
 };
 
-// シーン管理クラス
+// シーン型
 using SantaGame = SceneManager<State, GameData>;
+
+// 当たり判定型
+using Collision = Array<Grid<bool>>;

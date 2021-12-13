@@ -150,6 +150,15 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Santa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -801,6 +810,15 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Title.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Santa.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="World.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

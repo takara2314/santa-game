@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include "Common.hpp"
+#include "World.hpp"
+#include "Santa.hpp"
 
 
 ///////////////////////////////////
@@ -29,6 +31,13 @@ private:
 
 	// スコア
 	int32 m_score = 0;
+
+	// ワールド
+	World m_world = {10, 10, 10};
+	Collision m_collisions = m_world.collisions;
+
+	// サンタ
+	Santa m_santa = Santa{};
 
 public:
 
