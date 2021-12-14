@@ -5,14 +5,16 @@
 //  コンストラクタ
 ///////////////////////////////////
 World::World(int x, int y, int z) {
-	Collision tmp;
-	Grid<bool> surface{ static_cast<uint64>(x), static_cast<uint64>(z), false };
-	for (int i = 0; i < y; ++i)
+	for (int i = 0; i < x; ++i)
 	{
-		tmp << surface;
+		for (int j = 0; j < y; ++j)
+		{
+			for (int k = 0; k < z; ++k)
+			{
+				collisions[i][j][k] = false;
+			}
+		}
 	}
-
-	collisions = tmp;
 }
 
 

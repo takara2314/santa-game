@@ -5,7 +5,11 @@
 //  コンストラクタ
 ///////////////////////////////////
 Title::Title(const InitData& init)
-	: IScene(init) {}
+	: IScene(init)
+{
+	// ウィンドウの幅
+	Window::Resize(640, 480);
+}
 
 
 ///////////////////////////////////

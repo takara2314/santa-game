@@ -8,6 +8,9 @@
 Game::Game(const InitData& init)
 	: IScene(init)
 {
+	// ウィンドウの幅
+	Window::Resize(MAX_X * ONE_PIXEL, MAX_Y * ONE_PIXEL);
+
 	//// 横 (Scene::Width() / blockSize.x) 個、縦 5 個のブロックを配列に追加する
 	//for (auto p : step(Size((Scene::Width() / blockSize.x), 5)))
 	//{
@@ -22,7 +25,7 @@ Game::Game(const InitData& init)
 void Game::update()
 {
 	
-	if (KeyUp.pressed())
+	if (KeyDown.pressed())
 	{
 		m_santa.move(0, 0.5, m_collisions);
 	}
@@ -34,7 +37,7 @@ void Game::update()
 	{
 		m_santa.move(2, 0.5, m_collisions);
 	}
-	if (KeyLeft.pressed())
+	if (KeyUp.pressed())
 	{
 		m_santa.move(3, 0.5, m_collisions);
 	}
