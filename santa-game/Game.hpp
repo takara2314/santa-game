@@ -39,6 +39,15 @@ private:
 	// サンタ
 	Santa m_santa = Santa{};
 
+	// アングル
+	int m_angle = 1;
+
+	void m_angle1() const;
+
+	void m_angle2() const;
+
+	const Font m_font{50};
+
 public:
 
 	Game(const InitData& init);

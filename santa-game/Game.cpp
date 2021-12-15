@@ -24,22 +24,32 @@ Game::Game(const InitData& init)
 ///////////////////////////////////
 void Game::update()
 {
-	
+	// プレイヤーの操作
 	if (KeyDown.pressed())
 	{
-		m_santa.move(0, 0.5, m_collisions);
+		m_santa.move(0, 4.0, m_collisions, m_angle);
 	}
 	if (KeyLeft.pressed())
 	{
-		m_santa.move(1, 0.5, m_collisions);
+		m_santa.move(1, 4.0, m_collisions, m_angle);
 	}
 	if (KeyRight.pressed())
 	{
-		m_santa.move(2, 0.5, m_collisions);
+		m_santa.move(2, 4.0, m_collisions, m_angle);
 	}
 	if (KeyUp.pressed())
 	{
-		m_santa.move(3, 0.5, m_collisions);
+		m_santa.move(3, 4.0, m_collisions, m_angle);
+	}
+
+	// アングル変更
+	if (KeyLBracket.pressed())
+	{
+		m_angle = 1;
+	}
+	if (KeyRBracket.pressed())
+	{
+		m_angle = 2;
 	}
 
 	//// パドルを操作
@@ -114,7 +124,36 @@ void Game::draw() const
 //	// パドルを描く
 //	m_paddle.draw();
 
+	switch (m_angle)
+	{
+	case 1:
+		m_angle1();
+		break;
+	case 2:
+		m_angle2();
+		break;
+	}
+}
+
+
+// アングル1
+void Game::m_angle1() const
+{
 	Santa santa = m_santa;
 	// サンタ
-	santa.draw();
+	santa.draw(1);
+
+	m_font(U"アングル1").draw(Vec2{50, 50});
 }
+
+
+// アングル2
+void Game::m_angle2() const
+{
+	Santa santa = m_santa;
+	// サンタ
+	santa.draw(2);
+
+	m_font(U"アングル2").draw(Vec2{ 50, 50 });
+}
+
