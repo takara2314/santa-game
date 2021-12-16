@@ -35,6 +35,7 @@ private:
 	// ワールド
 	World m_world = World{MAX_X, MAX_Y, MAX_Z};
 	Collision m_collisions = m_world.collisions;
+	const double m_gravity = m_world.gravity;
 
 	// サンタ
 	Santa m_santa = Santa{};

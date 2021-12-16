@@ -13,8 +13,10 @@ Santa::Santa() {}
 ///////////////////////////////////
 void Santa::move(int direction, double quantity, Collision collisions, int angle)
 {
-	m_direction = direction;
 	Vec3 position = m_position;
+
+	// 向きを更新
+	m_direction = direction;
 
 	// 移動量をフレーム経過依存に
 	quantity *= Scene::DeltaTime();
@@ -78,11 +80,161 @@ void Santa::move(int direction, double quantity, Collision collisions, int angle
 		[static_cast<size_t>(position.y)]
 		[static_cast<size_t>(position.z)];
 
-	if (collision) {
+	if (collision)
+	{
 		return;
 	}
 
+	// 適応
 	m_position = position;
+}
+
+
+///////////////////////////////////
+//  ジャンプ
+///////////////////////////////////
+void Santa::jump(Collision collisions)
+{
+	Vec3 position = m_position;
+
+	if (m_is_ground && !m_is_jump)
+	{
+		m_is_jump = true;
+		m_y_speed = jump_speed * 0.05;
+		position.y += m_y_speed;
+		Print << U"ジャンプ開始";
+	}
+
+	// 高度調整
+	position.y = Min(position.y, static_cast<double>(MAX_Y) - 1);
+	position.y = Max(position.y, 0.0);
+
+	Print << U"(F)変更します！ " << position.y;
+
+	// 適応
+	m_position = position;
+}
+
+
+///////////////////////////////////
+//  ジャンプ・落下
+///////////////////////////////////
+void Santa::move_y(Collision collisions)
+{
+	Vec3 position = m_position;
+
+	if (m_is_jump)
+	{
+		m_y_speed -= Scene::DeltaTime() * m_y_acceleration * 0.05;
+
+		if (m_y_speed <= 0)
+		{
+			m_is_jump = false;
+		}
+
+		position.y += m_y_speed;
+	}
+
+	if (!m_is_jump && !m_is_ground)
+	{
+		m_y_speed -= Scene::DeltaTime() * m_y_acceleration * 0.05;
+		position.y += m_y_speed;
+	}
+	else if (!m_is_jump)
+	{
+		m_y_speed = 0.0;
+	}
+
+	// 高度調整
+	position.y = Min(position.y, static_cast<double>(MAX_Y) - 1);
+	position.y = Max(position.y, 0.0);
+
+	Print << U"(S)変更します！ " << position.y << (m_is_jump ? U"はい" : U"いいえ");
+
+	// 適応
+	m_position = position;
+}
+
+
+///////////////////////////////////
+//  向きを変更
+///////////////////////////////////
+void Santa::change_angle(int from, int to)
+{
+	if (from == 1 && to == 2 && m_direction == 0)
+	{
+		m_direction = 1;
+	}
+	else if (from == 1 && to == 2 && m_direction == 1)
+	{
+		m_direction = 3;
+	}
+	else if (from == 1 && to == 2 && m_direction == 2)
+	{
+		m_direction = 0;
+	}
+	else if (from == 1 && to == 2 && m_direction == 3)
+	{
+		m_direction = 2;
+	}
+	else if (from == 2 && to == 1 && m_direction == 0)
+	{
+		m_direction = 2;
+	}
+	else if (from == 2 && to == 1 && m_direction == 1)
+	{
+		m_direction = 0;
+	}
+	else if (from == 2 && to == 1 && m_direction == 2)
+	{
+		m_direction = 3;
+	}
+	else if (from == 2 && to == 1 && m_direction == 3)
+	{
+		m_direction = 1;
+	}
+}
+
+
+///////////////////////////////////
+//  接地判定
+///////////////////////////////////
+void Santa::check_ground(Collision collisions)
+{
+	// ジャンプ中は非対象
+	if (m_is_jump)
+	{
+		return;
+	}
+
+	// 0は絶対ある
+	if (m_position.y == 0)
+	{
+		m_is_ground = true;
+		return;
+	}
+
+	// 下まで当たり判定があるかどうかをチェック
+	for (int i = m_position.y; 0 <= i; --i)
+	{
+		//Print << static_cast<size_t>(m_position.x);
+		//Print << static_cast<size_t>(m_position.y);
+		//Print << static_cast<size_t>(m_position.z);
+
+		// 当たり判定があればキャンセル
+		bool collision = collisions
+			[static_cast<size_t>(m_position.x)]
+			[static_cast<size_t>(m_position.y)]
+			[static_cast<size_t>(m_position.z)];
+
+		if (collision)
+		{
+			m_is_ground = true;
+			return;
+		}
+
+	}
+	m_is_ground = false;
 }
 
 
@@ -165,6 +317,6 @@ void Santa::draw(int angle)
 		.scaled(2.5)
 		.drawAt(
 			(draw_pos * ONE_PIXEL)
-				.movedBy(Vec2{ ONE_PIXEL / 2, ONE_PIXEL - 36 })
+				.movedBy(Vec2{ ONE_PIXEL / 2, -36 })
 		);
 }

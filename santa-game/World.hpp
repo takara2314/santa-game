@@ -10,8 +10,9 @@ class World
 {
 private:
 
-
 public:
+
+	const double gravity = 9.8;
 
 	Collision collisions;
 
