@@ -91,9 +91,13 @@ Point Game::m_correct_click_pos(Point pos)
 	{
 		pos.y = 1;
 	}
-	if (pos.x >= MAX_X * ONE_PIXEL)
+	if (pos.x >= MAX_X * ONE_PIXEL && m_angle == 1)
 	{
 		pos.x = MAX_X * ONE_PIXEL - 1;
+	}
+	if (pos.x >= MAX_Z * ONE_PIXEL && m_angle == 2)
+	{
+		pos.x = MAX_Z * ONE_PIXEL - 1;
 	}
 	if (pos.y >= MAX_Y * ONE_PIXEL)
 	{

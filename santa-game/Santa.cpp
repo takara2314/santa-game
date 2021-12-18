@@ -97,20 +97,41 @@ void Santa::move(int direction, double quantity, Collision collisions, int angle
 	size_t z = static_cast<size_t>(position.z + 0.5);
 
 	// 足元か頭上に当たり判定があればキャンセル
-	if (m_direction == 1)
+	if (angle == 1)
 	{
-		double temp = position.x + 0.5 - m_width / 2;
-		Print << U"before: " << temp;
-		x = static_cast<size_t>(temp < 0 ? 0 : temp);
-		y = static_cast<size_t>(position.y);
-		z = static_cast<size_t>(position.z + 0.5);
+		if (m_direction == 1)
+		{
+			double temp = position.x + 0.5 - m_width / 2;
+			Print << U"before: " << temp;
+			x = static_cast<size_t>(temp < 0 ? 0 : temp);
+			y = static_cast<size_t>(position.y);
+			z = static_cast<size_t>(position.z + 0.5);
+		}
+		else if (m_direction == 2)
+		{
+			x = Min(static_cast<size_t>(position.x + 0.5 + m_width / 2), static_cast<size_t>(MAX_X - 1));
+			y = static_cast<size_t>(position.y);
+			z = static_cast<size_t>(position.z + 0.5);
+		}
 	}
-	else if (m_direction == 2)
+	else
 	{
-		x = Min(static_cast<size_t>(position.x + 0.5 + m_width / 2), static_cast<size_t>(MAX_X - 1));
-		y = static_cast<size_t>(position.y);
-		z = static_cast<size_t>(position.z + 0.5);
+		if (m_direction == 1)
+		{
+			double temp = position.z + 0.5 - m_width / 2;
+			Print << U"before: " << temp;
+			x = static_cast<size_t>(position.x + 0.5);
+			y = static_cast<size_t>(position.y);
+			z = static_cast<size_t>(temp < 0 ? 0 : temp);
+		}
+		else if (m_direction == 2)
+		{
+			x = static_cast<size_t>(position.x + 0.5);
+			y = static_cast<size_t>(position.y);
+			z = Min(static_cast<size_t>(position.z + 0.5 + m_width / 2), static_cast<size_t>(MAX_Z - 1));
+		}
 	}
+
 
 	bool collision_underfoot = collisions[x][y][z];
 

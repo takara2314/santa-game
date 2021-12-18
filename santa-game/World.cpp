@@ -75,7 +75,7 @@ void World::draw(Vec3 player_pos)
 		{
 			for (int j = 0; j < MAX_X; ++j)
 			{
-				bool collision = collisions[j][i][static_cast<size_t>(player_pos.z)];
+				bool collision = collisions[j][i][static_cast<size_t>(player_pos.z + 0.5)];
 
 				if (collision)
 				{
@@ -96,7 +96,7 @@ void World::draw(Vec3 player_pos)
 		{
 			for (int j = 0; j < MAX_Z; ++j)
 			{
-				bool collision = collisions[static_cast<size_t>(player_pos.x)][i][j];
+				bool collision = collisions[static_cast<size_t>(player_pos.x + 0.5)][i][j];
 
 				if (collision)
 				{
@@ -124,20 +124,20 @@ void World::set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block)
 	{
 		x = static_cast<size_t>(mouse_x / ONE_PIXEL);
 		y = static_cast<size_t>((MAX_Y * ONE_PIXEL - mouse_y) / ONE_PIXEL);
-		z = static_cast<size_t>(player_pos.z);
+		z = static_cast<size_t>(player_pos.z + 0.5);
 	}
 	else
 	{
-		x = static_cast<size_t>(player_pos.x);
+		x = static_cast<size_t>(player_pos.x + 0.5);
 		y = static_cast<size_t>((MAX_Y * ONE_PIXEL - mouse_y) / ONE_PIXEL);
 		z = static_cast<size_t>(mouse_x / ONE_PIXEL);
 	}
 
 	// プレイヤーの位置には設置できない
 	if (
-		x == static_cast<size_t>(player_pos.x)
+		x == static_cast<size_t>(player_pos.x + 0.5)
 		&& y == static_cast<size_t>(player_pos.y)
-		&& z == static_cast<size_t>(player_pos.z))
+		&& z == static_cast<size_t>(player_pos.z + 0.5))
 	{
 		return;
 	}
@@ -160,11 +160,11 @@ void World::remove_block(int mouse_x, int mouse_y, Vec3 player_pos)
 	{
 		x = static_cast<size_t>(mouse_x / ONE_PIXEL);
 		y = static_cast<size_t>((MAX_Y * ONE_PIXEL - mouse_y) / ONE_PIXEL);
-		z = static_cast<size_t>(player_pos.z);
+		z = static_cast<size_t>(player_pos.z + 0.5);
 	}
 	else
 	{
-		x = static_cast<size_t>(player_pos.x);
+		x = static_cast<size_t>(player_pos.x + 0.5);
 		y = static_cast<size_t>((MAX_Y * ONE_PIXEL - mouse_y) / ONE_PIXEL);
 		z = static_cast<size_t>(mouse_x / ONE_PIXEL);
 	}

@@ -14,7 +14,7 @@ private:
 	Texture m_skin{ U"santa.png" };
 
 	// 位置
-	Vec3 m_position{ 3.0, 5.0, 2.0 };
+	Vec3 m_position{ 3.0, 5.0, 0.0 };
 
 	// 身長
 	const double m_height = 1.65;
