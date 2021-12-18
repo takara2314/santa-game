@@ -181,7 +181,7 @@ void World::set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block)
 	}
 
 	// 既にブロックが設置されているならキャンセル
-	if (world_data[x][y][z].name == U"空気")
+	if (world_data[x][y][z].name != U"空気")
 	{
 		return;
 	}
