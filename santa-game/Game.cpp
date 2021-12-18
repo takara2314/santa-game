@@ -10,6 +10,10 @@ Game::Game(const InitData& init)
 {
 	// ウィンドウの幅
 	Window::Resize(MAX_X * ONE_PIXEL, MAX_Y * ONE_PIXEL);
+
+	// BGMを再生
+	m_bgm.setVolume(0.8);
+	m_bgm.play();
 }
 
 
@@ -20,23 +24,25 @@ void Game::update()
 {
 	// 当たり判定を更新
 	m_collisions = m_world.collisions;
+	// ワールドデータを更新
+	m_world_data = m_world.world_data;
 
 	// プレイヤーの操作
 	if (KeyDown.pressed())
 	{
-		m_santa.move(0, 4.0, m_collisions, m_angle);
+		m_santa.move(0, 4.0, m_collisions, m_world_data, m_items[2].walk_sound, m_angle);
 	}
 	if (KeyLeft.pressed())
 	{
-		m_santa.move(1, 4.0, m_collisions, m_angle);
+		m_santa.move(1, 4.0, m_collisions, m_world_data, m_items[2].walk_sound, m_angle);
 	}
 	if (KeyRight.pressed())
 	{
-		m_santa.move(2, 4.0, m_collisions, m_angle);
+		m_santa.move(2, 4.0, m_collisions, m_world_data, m_items[2].walk_sound, m_angle);
 	}
 	if (KeyUp.pressed())
 	{
-		m_santa.move(3, 4.0, m_collisions, m_angle);
+		m_santa.move(3, 4.0, m_collisions, m_world_data, m_items[2].walk_sound, m_angle);
 	}
 	if (KeySpace.pressed())
 	{

@@ -11,16 +11,21 @@
 class Game : public SantaGame::Scene
 {
 private:
+
 	// アイテム情報
 	vector<Item> m_items = {
-		Item{ U"土ブロック", U"items/dirt.png" },
-		Item{ U"草ブロック", U"items/grass.png" },
-		Item{ U"レンガブロック", U"items/brick.png" },
+		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
+		Item{ U"草ブロック", U"items/grass.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
+		Item{ U"レンガブロック", U"items/brick.png", U"se/touch_to_stone.mp3", U"se/walk_on_brick.mp3" },
 	};
+
+	// BGM
+	const Audio m_bgm = Audio{ Audio::Stream, U"bgm.mp3", Loop::Yes };
 
 	// ワールド
 	World m_world = World{MAX_X, MAX_Y, MAX_Z, m_items};
 	Collision m_collisions = m_world.collisions;
+	WorldData m_world_data = m_world.world_data;
 	const double m_gravity = m_world.gravity;
 
 	// サンタ

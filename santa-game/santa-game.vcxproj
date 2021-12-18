@@ -310,6 +310,11 @@
     <Media Include="App\example\shot.mp3" />
     <Media Include="App\example\test.mp3" />
     <Media Include="App\example\video\river.mp4" />
+    <Media Include="App\se\touch_to_grass.mp3" />
+    <Media Include="App\se\touch_to_stone.mp3" />
+    <Media Include="App\se\walk_on_brick.mp3" />
+    <Media Include="App\se\walk_on_grass.mp3" />
+    <Media Include="App\se\walk_on_wood.mp3" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="App\001Shirokuma-Regular.otf" />

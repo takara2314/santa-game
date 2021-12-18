@@ -22,7 +22,7 @@ Vec3 Santa::get_position()
 ///////////////////////////////////
 //  移動処理
 ///////////////////////////////////
-void Santa::move(int direction, double quantity, Collision collisions, int angle)
+void Santa::move(int direction, double quantity, Collision collisions, WorldData world_data, Audio& init_walk_sound, int angle)
 {
 	Vec3 position = m_position;
 
@@ -85,16 +85,15 @@ void Santa::move(int direction, double quantity, Collision collisions, int angle
 
 	Print << U"現在座標: " << Unicode::Widen(format("({:5.2f}, {:5.2f}, {:5.2f})", position.x, position.y, position.z));
 
-	//for (int i = 0; i < MAX_X; ++i)
-	//{
-	//	bool atari = collisions[i][static_cast<size_t>(m_position.y)][static_cast<size_t>(m_position.z)];
-	//	// Print << i << U": " << (atari ? U"true" : U"false");
-	//}
-	//// Print << U"";
-
 	size_t x = static_cast<size_t>(position.x + 0.5);
 	size_t y = static_cast<size_t>(position.y);
 	size_t z = static_cast<size_t>(position.z + 0.5);
+
+	// yの小数部分が0.9~1.0ならインクリメントして考える
+	if (m_pick_decimal(position.y) >= 0.9 && m_pick_decimal(position.y) < 1.0)
+	{
+		y++;
+	}
 
 	// 足元か頭上に当たり判定があればキャンセル
 	if (angle == 1)
@@ -102,16 +101,11 @@ void Santa::move(int direction, double quantity, Collision collisions, int angle
 		if (m_direction == 1)
 		{
 			double temp = position.x + 0.5 - m_width / 2;
-			Print << U"before: " << temp;
 			x = static_cast<size_t>(temp < 0 ? 0 : temp);
-			y = static_cast<size_t>(position.y);
-			z = static_cast<size_t>(position.z + 0.5);
 		}
 		else if (m_direction == 2)
 		{
 			x = Min(static_cast<size_t>(position.x + 0.5 + m_width / 2), static_cast<size_t>(MAX_X - 1));
-			y = static_cast<size_t>(position.y);
-			z = static_cast<size_t>(position.z + 0.5);
 		}
 	}
 	else
@@ -119,15 +113,10 @@ void Santa::move(int direction, double quantity, Collision collisions, int angle
 		if (m_direction == 1)
 		{
 			double temp = position.z + 0.5 - m_width / 2;
-			Print << U"before: " << temp;
-			x = static_cast<size_t>(position.x + 0.5);
-			y = static_cast<size_t>(position.y);
 			z = static_cast<size_t>(temp < 0 ? 0 : temp);
 		}
 		else if (m_direction == 2)
 		{
-			x = static_cast<size_t>(position.x + 0.5);
-			y = static_cast<size_t>(position.y);
 			z = Min(static_cast<size_t>(position.z + 0.5 + m_width / 2), static_cast<size_t>(MAX_Z - 1));
 		}
 	}
@@ -135,17 +124,27 @@ void Santa::move(int direction, double quantity, Collision collisions, int angle
 
 	bool collision_underfoot = collisions[x][y][z];
 
-	y = Min(static_cast<size_t>(m_position.y + m_height), static_cast<size_t>(MAX_Y - 1));
-	Print << U"移動先: " << Unicode::Widen(format("({:d}, {:d}, {:d})", static_cast<int>(x), static_cast<int>(y), static_cast<int>(z)));
+	size_t y_overhead = Min(static_cast<size_t>(m_position.y + m_height), static_cast<size_t>(MAX_Y - 1));
+	// Print << U"移動先: " << Unicode::Widen(format("({:d}, {:d}, {:d})", static_cast<int>(x), static_cast<int>(y), static_cast<int>(z)));
 
-	bool collision_overhead = collisions[x][y][z];
+	bool collision_overhead = collisions[x][y_overhead][z];
 
 	if (collision_underfoot || collision_overhead)
 	{
 		return;
 	}
 
-	Print << U"";
+	// Print << U"";
+
+	// 歩行音
+	if (y > 0 && world_data[x][y - 1][z].name != U"空気")
+	{
+		world_data[x][y - 1][z].walk_sound.play();
+	}
+	else
+	{
+		init_walk_sound.play();
+	}
 
 	// 適応
 	m_position = position;

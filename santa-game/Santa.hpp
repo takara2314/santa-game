@@ -50,7 +50,7 @@ public:
 
 	Vec3 get_position();
 
-	void move(int direction, double quantity, Collision collisions, int angle);
+	void move(int direction, double quantity, Collision collisions, WorldData world_data, Audio& init_walk_sound, int angle);
 
 	void jump(Collision collisions);
 

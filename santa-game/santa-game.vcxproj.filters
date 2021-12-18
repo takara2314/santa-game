@@ -139,6 +139,9 @@
     <Filter Include="Resource Files\items">
       <UniqueIdentifier>{37bb4d4e-0b15-49db-a843-ef8a8e3f7093}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\se">
+      <UniqueIdentifier>{51895196-712e-4cd0-bf70-222a525d58a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -778,6 +781,21 @@
     </Media>
     <Media Include="App\example\shot.mp3">
       <Filter>Resource Files\example</Filter>
+    </Media>
+    <Media Include="App\se\touch_to_grass.mp3">
+      <Filter>Resource Files\se</Filter>
+    </Media>
+    <Media Include="App\se\touch_to_stone.mp3">
+      <Filter>Resource Files\se</Filter>
+    </Media>
+    <Media Include="App\se\walk_on_brick.mp3">
+      <Filter>Resource Files\se</Filter>
+    </Media>
+    <Media Include="App\se\walk_on_grass.mp3">
+      <Filter>Resource Files\se</Filter>
+    </Media>
+    <Media Include="App\se\walk_on_wood.mp3">
+      <Filter>Resource Files\se</Filter>
     </Media>
   </ItemGroup>
   <ItemGroup>

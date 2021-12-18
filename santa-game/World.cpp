@@ -180,8 +180,17 @@ void World::set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block)
 		return;
 	}
 
+	// 既にブロックが設置されているならキャンセル
+	if (world_data[x][y][z].name == U"空気")
+	{
+		return;
+	}
+
 	// Print << U"click " << mouse_x << U" " << mouse_y;
 	Print << U"設置 " << x << U" " << y << U" " << z;
+
+	// 設置音
+	block.touch_sound.play();
 
 	world_data[x][y][z] = block;
 	collisions[x][y][z] = true;
@@ -205,6 +214,12 @@ void World::remove_block(int mouse_x, int mouse_y, Vec3 player_pos)
 		x = static_cast<size_t>(player_pos.x + 0.5);
 		y = static_cast<size_t>((MAX_Y * ONE_PIXEL - mouse_y) / ONE_PIXEL);
 		z = static_cast<size_t>(mouse_x / ONE_PIXEL);
+	}
+
+	// 破壊音
+	if (world_data[x][y][z].name != U"空気")
+	{
+		world_data[x][y][z].touch_sound.play();
 	}
 
 	world_data[x][y][z] = Item{};
