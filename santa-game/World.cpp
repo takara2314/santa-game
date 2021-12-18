@@ -142,7 +142,7 @@ void World::set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block)
 		return;
 	}
 
-	Print << U"click " << mouse_x << U" " << mouse_y;
+	// Print << U"click " << mouse_x << U" " << mouse_y;
 	Print << U"設置 " << x << U" " << y << U" " << z;
 
 	// world_data[x][y][z] = block;

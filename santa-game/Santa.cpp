@@ -83,31 +83,48 @@ void Santa::move(int direction, double quantity, Collision collisions, int angle
 		return;
 	}
 
-	Print << Unicode::Widen(format("({:5.2f}, {:5.2f}, {:5.2f})", position.x, position.y, position.z));
+	Print << U"現在座標: " << Unicode::Widen(format("({:5.2f}, {:5.2f}, {:5.2f})", position.x, position.y, position.z));
 
+	//for (int i = 0; i < MAX_X; ++i)
+	//{
+	//	bool atari = collisions[i][static_cast<size_t>(m_position.y)][static_cast<size_t>(m_position.z)];
+	//	// Print << i << U": " << (atari ? U"true" : U"false");
+	//}
+	//// Print << U"";
 
-	for (int i = 0; i < MAX_X; ++i)
+	size_t x = static_cast<size_t>(position.x + 0.5);
+	size_t y = static_cast<size_t>(position.y);
+	size_t z = static_cast<size_t>(position.z + 0.5);
+
+	// 足元か頭上に当たり判定があればキャンセル
+	if (m_direction == 1)
 	{
-		bool atari = collisions[i][static_cast<size_t>(m_position.y)][static_cast<size_t>(m_position.z)];
-		Print << i << U": " << (atari ? U"true" : U"false");
+		double temp = position.x + 0.5 - m_width / 2;
+		Print << U"before: " << temp;
+		x = static_cast<size_t>(temp < 0 ? 0 : temp);
+		y = static_cast<size_t>(position.y);
+		z = static_cast<size_t>(position.z + 0.5);
 	}
-	Print << U"";
-
-	// 当たり判定があればキャンセル
-	bool collision = collisions
-		[static_cast<size_t>(position.x + 0.5)]
-		[static_cast<size_t>(position.y)]
-		[static_cast<size_t>(position.z + 0.5)];
-
-	if (collision)
+	else if (m_direction == 2)
 	{
-		Print << U"あり " << static_cast<size_t>(position.x) << U" " << static_cast<size_t>(position.y) << U" " << static_cast<size_t>(position.z);
+		x = Min(static_cast<size_t>(position.x + 0.5 + m_width / 2), static_cast<size_t>(MAX_X - 1));
+		y = static_cast<size_t>(position.y);
+		z = static_cast<size_t>(position.z + 0.5);
+	}
+
+	bool collision_underfoot = collisions[x][y][z];
+
+	y = Min(static_cast<size_t>(m_position.y + m_height), static_cast<size_t>(MAX_Y - 1));
+	Print << U"移動先: " << Unicode::Widen(format("({:d}, {:d}, {:d})", static_cast<int>(x), static_cast<int>(y), static_cast<int>(z)));
+
+	bool collision_overhead = collisions[x][y][z];
+
+	if (collision_underfoot || collision_overhead)
+	{
 		return;
 	}
-	else
-	{
-		Print << U"なし " << static_cast<size_t>(position.x) << U" " << static_cast<size_t>(position.y) << U" " << static_cast<size_t>(position.z);
-	}
+
+	Print << U"";
 
 	// 適応
 	m_position = position;
@@ -124,12 +141,13 @@ void Santa::jump(Collision collisions)
 	if (m_is_ground && !m_is_jump)
 	{
 		m_is_jump = true;
+		m_is_ground = false;
 		m_y_speed = jump_speed * 0.05;
 		position.y += m_y_speed;
 	}
 
 	// 高度調整
-	position.y = Min(position.y, static_cast<double>(MAX_Y) - 1);
+	position.y = Min(position.y, static_cast<double>(MAX_Y - 1));
 	position.y = Max(position.y, 0.0);
 
 	// 適応
@@ -144,6 +162,7 @@ void Santa::move_y(Collision collisions)
 {
 	Vec3 position = m_position;
 
+	// ジャンプ中
 	if (m_is_jump)
 	{
 		m_y_speed -= Scene::DeltaTime() * m_y_acceleration * 0.05;
@@ -153,21 +172,37 @@ void Santa::move_y(Collision collisions)
 			m_is_jump = false;
 		}
 
+		// <身長>ブロック上にブロックがあればキャンセル
+		size_t x = static_cast<size_t>(m_position.x + 0.5);
+		size_t y = Min(static_cast<size_t>(m_position.y + m_height), static_cast<size_t>(MAX_Y - 1));
+		size_t z = static_cast<size_t>(m_position.z + 0.5);
+
+		bool collision = collisions[x][y][z];
+
+		if (collision)
+		{
+			m_is_jump = false;
+			m_y_speed = 0.0;
+		}
+
 		position.y += m_y_speed;
 	}
 
+	// ジャンプ落下中
 	if (!m_is_jump && !m_is_ground)
 	{
 		m_y_speed -= Scene::DeltaTime() * m_y_acceleration * 0.05;
 		position.y += m_y_speed;
 	}
+
+	// 落下して地面についた
 	else if (!m_is_jump)
 	{
 		m_y_speed = 0.0;
-		/*if (m_pick_decimal(position.y) >= 0.5)
+		if (m_pick_decimal(position.y) >= 0.5)
 		{
 			position.y = static_cast<int>(position.y) + 1.0;
-		}*/
+		}
 	}
 
 	// 高度調整
@@ -245,27 +280,18 @@ void Santa::check_ground(Collision collisions)
 		return;
 	}
 
-	// 下まで当たり判定があるかどうかをチェック
-	for (int i = m_position.y; 0 <= i; --i)
+	// その位置に当たり判定があれば
+	bool collision = collisions
+		[static_cast<size_t>(m_position.x + 0.5)]
+		[static_cast<size_t>(m_position.y)]
+		[static_cast<size_t>(m_position.z + 0.5)];
+
+	if (collision)
 	{
-		//Print << static_cast<size_t>(m_position.x);
-		//Print << static_cast<size_t>(m_position.y);
-		//Print << static_cast<size_t>(m_position.z);
-
-		// 当たり判定があればキャンセル
-		bool collision = collisions
-			[static_cast<size_t>(m_position.x)]
-			[static_cast<size_t>(m_position.y)]
-			// [static_cast<size_t>(m_position.y - 1.0)]
-			[static_cast<size_t>(m_position.z)];
-
-		if (collision)
-		{
-			m_is_ground = true;
-			return;
-		}
-
+		m_is_ground = true;
+		return;
 	}
+
 	m_is_ground = false;
 }
 

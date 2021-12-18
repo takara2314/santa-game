@@ -16,6 +16,12 @@ private:
 	// 位置
 	Vec3 m_position{ 3.0, 5.0, 2.0 };
 
+	// 身長
+	const double m_height = 1.65;
+
+	// 横幅
+	const double m_width = 1.0;
+		
 	// 向き
 	int m_direction = 0;
 
