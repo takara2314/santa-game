@@ -58,7 +58,7 @@ void Santa::move(int direction, double quantity, Collision collisions, int angle
 		switch (direction)
 		{
 		case 0:
-			position.x -= quantity;
+			position.x += quantity;
 			break;
 		case 1:
 			position.z -= quantity;
@@ -67,7 +67,7 @@ void Santa::move(int direction, double quantity, Collision collisions, int angle
 			position.z += quantity;
 			break;
 		case 3:
-			position.x += quantity;
+			position.x -= quantity;
 			break;
 		}
 	}

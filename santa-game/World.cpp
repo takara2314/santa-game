@@ -79,15 +79,22 @@ void World::draw(Vec3 player_pos)
 		{
 			for (int j = 0; j < MAX_X; ++j)
 			{
-				bool collision = collisions[j][i][static_cast<size_t>(player_pos.z + 0.5)];
-				Item item = world_data[j][i][static_cast<size_t>(player_pos.z + 0.5)];
-
-				if (item.name != U"空気")
+				int z = static_cast<int>(player_pos.z + 0.5);
+				for (int k = z; k < MAX_Z; ++k)
 				{
-					item.skin.draw(
-						j * ONE_PIXEL,
-						ONE_PIXEL * (MAX_Y - 1 - i)
-					);
+					Item item = world_data[j][i][k];
+
+					if (item.name != U"空気")
+					{
+						item.skin.draw(
+							j * ONE_PIXEL,
+							ONE_PIXEL * (MAX_Y - 1 - i),
+							// 遠くなっていくほど薄くなる
+							ColorF(1.0, Max(1.0 - (k - z) * 0.3, 0.0))
+						);
+
+						break;
+					}
 				}
 
 				// デバッグ用
@@ -99,7 +106,7 @@ void World::draw(Vec3 player_pos)
 						ONE_PIXEL,
 						ONE_PIXEL
 					}
-					.draw(Color(0, 255, 0, 128));
+						.draw(Color(0, 255, 0, 128));
 				}*/
 			}
 		}
@@ -110,15 +117,22 @@ void World::draw(Vec3 player_pos)
 		{
 			for (int j = 0; j < MAX_Z; ++j)
 			{
-				bool collision = collisions[static_cast<size_t>(player_pos.x + 0.5)][i][j];
-				Item item = world_data[j][i][static_cast<size_t>(player_pos.z + 0.5)];
-
-				if (item.name != U"空気")
+				int x = static_cast<int>(player_pos.x + 0.5);
+				for (int k = x; k >= 0; --k)
 				{
-					item.skin.draw(
-						j * ONE_PIXEL,
-						ONE_PIXEL * (MAX_Y - 1 - i)
-					);
+					Item item = world_data[k][i][j];
+
+					if (item.name != U"空気")
+					{
+						item.skin.draw(
+							j * ONE_PIXEL,
+							ONE_PIXEL * (MAX_Y - 1 - i),
+							// 遠くなっていくほど薄くなる
+							ColorF(1.0, Max(1.0 - (x - k) * 0.3, 0.0))
+						);
+
+						break;
+					}
 				}
 
 				// デバッグ用
@@ -130,7 +144,7 @@ void World::draw(Vec3 player_pos)
 						ONE_PIXEL,
 						ONE_PIXEL
 					}
-					.draw(Color(0, 255, 0, 128));
+						.draw(Color(0, 255, 0, 128));
 				}*/
 			}
 		}
