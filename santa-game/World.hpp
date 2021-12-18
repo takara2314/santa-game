@@ -10,13 +10,22 @@ class World
 {
 private:
 
+	int m_angle = 1;
+
 public:
 
 	const double gravity = 9.8;
 
 	Collision collisions;
+	// WorldData world_data;
 
 	World(int x, int y, int z);
 
-	void draw();
+	void change_angle(int angle);
+
+	void draw(Vec3 player_pos);
+
+	void set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block);
+
+	void remove_block(int mouse_x, int mouse_y, Vec3 player_pos);
 };

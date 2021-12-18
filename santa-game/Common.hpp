@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
+#include "Item.hpp"
 
 using namespace std;
 
@@ -29,4 +30,7 @@ const int MAX_Z = 4;
 const int ONE_PIXEL = 48;
 
 // 当たり判定型
-using Collision = array<array<array<bool, MAX_Z>, MAX_Y>, MAX_X > ;
+using Collision = vector<vector<vector<bool>>>;
+
+// ワールドデータ型
+// using WorldData = array<array<array<Item, MAX_Z>, MAX_Y>, MAX_X >;

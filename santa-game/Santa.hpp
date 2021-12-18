@@ -26,18 +26,23 @@ private:
 	bool m_is_jump = false;
 
 	// ジャンプ初速度
-	const double jump_speed = 2.0;
+	const double jump_speed = 3.25;
 	// 縦方向の加速度
-	const double m_y_acceleration = 9.8;
+	double m_y_acceleration = 9.8;
 	// 縦方向の速度
 	double m_y_speed = 0.0;
 
 	// インベントリ
 	Array<Item> m_inventory;
 
+	// 小数部分だけ取り出す
+	double m_pick_decimal(double num);
+
 public:
 
-	Santa();
+	Santa(double y_acceleration);
+
+	Vec3 get_position();
 
 	void move(int direction, double quantity, Collision collisions, int angle);
 

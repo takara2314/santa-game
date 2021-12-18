@@ -5,8 +5,19 @@
 ///////////////////////////////////
 //  コンストラクタ
 ///////////////////////////////////
-Santa::Santa() {}
+Santa::Santa(double y_acceleration)
+{
+	m_y_acceleration = y_acceleration;
+}
 
+
+///////////////////////////////////
+//  座標を受け取る
+///////////////////////////////////
+Vec3 Santa::get_position()
+{
+	return m_position;
+}
 
 ///////////////////////////////////
 //  移動処理
@@ -74,15 +85,28 @@ void Santa::move(int direction, double quantity, Collision collisions, int angle
 
 	Print << Unicode::Widen(format("({:5.2f}, {:5.2f}, {:5.2f})", position.x, position.y, position.z));
 
+
+	for (int i = 0; i < MAX_X; ++i)
+	{
+		bool atari = collisions[i][static_cast<size_t>(m_position.y)][static_cast<size_t>(m_position.z)];
+		Print << i << U": " << (atari ? U"true" : U"false");
+	}
+	Print << U"";
+
 	// 当たり判定があればキャンセル
 	bool collision = collisions
-		[static_cast<size_t>(position.x)]
+		[static_cast<size_t>(position.x + 0.5)]
 		[static_cast<size_t>(position.y)]
-		[static_cast<size_t>(position.z)];
+		[static_cast<size_t>(position.z + 0.5)];
 
 	if (collision)
 	{
+		Print << U"あり " << static_cast<size_t>(position.x) << U" " << static_cast<size_t>(position.y) << U" " << static_cast<size_t>(position.z);
 		return;
+	}
+	else
+	{
+		Print << U"なし " << static_cast<size_t>(position.x) << U" " << static_cast<size_t>(position.y) << U" " << static_cast<size_t>(position.z);
 	}
 
 	// 適応
@@ -102,14 +126,11 @@ void Santa::jump(Collision collisions)
 		m_is_jump = true;
 		m_y_speed = jump_speed * 0.05;
 		position.y += m_y_speed;
-		Print << U"ジャンプ開始";
 	}
 
 	// 高度調整
 	position.y = Min(position.y, static_cast<double>(MAX_Y) - 1);
 	position.y = Max(position.y, 0.0);
-
-	Print << U"(F)変更します！ " << position.y;
 
 	// 適応
 	m_position = position;
@@ -117,7 +138,7 @@ void Santa::jump(Collision collisions)
 
 
 ///////////////////////////////////
-//  ジャンプ・落下
+//  y座標位置変更
 ///////////////////////////////////
 void Santa::move_y(Collision collisions)
 {
@@ -143,17 +164,27 @@ void Santa::move_y(Collision collisions)
 	else if (!m_is_jump)
 	{
 		m_y_speed = 0.0;
+		/*if (m_pick_decimal(position.y) >= 0.5)
+		{
+			position.y = static_cast<int>(position.y) + 1.0;
+		}*/
 	}
 
 	// 高度調整
 	position.y = Min(position.y, static_cast<double>(MAX_Y) - 1);
 	position.y = Max(position.y, 0.0);
 
-	Print << U"(S)変更します！ " << position.y << (m_is_jump ? U"はい" : U"いいえ");
-
 	// 適応
 	m_position = position;
 }
+
+
+// 小数部分だけ取り出す
+double Santa::m_pick_decimal(double num)
+{
+	return num - static_cast<int>(num);
+}
+
 
 
 ///////////////////////////////////
@@ -225,6 +256,7 @@ void Santa::check_ground(Collision collisions)
 		bool collision = collisions
 			[static_cast<size_t>(m_position.x)]
 			[static_cast<size_t>(m_position.y)]
+			// [static_cast<size_t>(m_position.y - 1.0)]
 			[static_cast<size_t>(m_position.z)];
 
 		if (collision)
@@ -244,37 +276,6 @@ void Santa::check_ground(Collision collisions)
 void Santa::draw(int angle)
 {
 	ScopedRenderStates2D renderState(SamplerState::ClampNearest);
-
-	// デバッグ線
-	for (int i = 0; i < MAX_X; ++i)
-	{
-		for (int j = 0; j < MAX_Y; ++j)
-		{
-			for (int k = 0; k < MAX_Z; ++k)
-			{
-				if (angle == 1)
-				{
-					Rect{
-						i * ONE_PIXEL,
-						j * ONE_PIXEL,
-						ONE_PIXEL,
-						ONE_PIXEL
-					}
-					.drawFrame(3, Color(255, 0, 0));
-				}
-				else
-				{
-					Rect{
-						k * ONE_PIXEL,
-						j * ONE_PIXEL,
-						ONE_PIXEL,
-						ONE_PIXEL
-					}
-					.drawFrame(3, Color(255, 0, 0));
-				}
-			}
-		}
-	}
 
 	// 描画座標
 	Vec2 draw_pos{};
@@ -317,6 +318,6 @@ void Santa::draw(int angle)
 		.scaled(2.5)
 		.drawAt(
 			(draw_pos * ONE_PIXEL)
-				.movedBy(Vec2{ ONE_PIXEL / 2, -36 })
+				.movedBy(Vec2{ ONE_PIXEL / 2, -40 })
 		);
 }

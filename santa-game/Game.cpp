@@ -9,7 +9,7 @@ Game::Game(const InitData& init)
 	: IScene(init)
 {
 	// ウィンドウの幅
-	Window::Resize(MAX_X * ONE_PIXEL, MAX_Y * ONE_PIXEL + ONE_PIXEL);
+	Window::Resize(MAX_X * ONE_PIXEL, MAX_Y * ONE_PIXEL);
 }
 
 
@@ -18,6 +18,9 @@ Game::Game(const InitData& init)
 ///////////////////////////////////
 void Game::update()
 {
+	// 当たり判定を更新
+	m_collisions = m_world.collisions;
+
 	// プレイヤーの操作
 	if (KeyDown.pressed())
 	{
@@ -37,7 +40,6 @@ void Game::update()
 	}
 	if (KeySpace.pressed())
 	{
-		Print << U"ジャンプします！";
 		m_santa.jump(m_collisions);
 	}
 
@@ -45,11 +47,13 @@ void Game::update()
 	if (KeyLBracket.pressed())
 	{
 		m_santa.change_angle(m_angle, 1);
+		m_world.change_angle(1);
 		m_angle = 1;
 	}
 	if (KeyRBracket.pressed())
 	{
 		m_santa.change_angle(m_angle, 2);
+		m_world.change_angle(2);
 		m_angle = 2;
 	}
 
@@ -58,6 +62,45 @@ void Game::update()
 
 	// 接地していなかったら落下
 	m_santa.move_y(m_collisions);
+
+	// ブロック操作
+	if (MouseR.pressed())
+	{
+		Point pos = m_correct_click_pos(Cursor::Pos());
+		m_world.set_block(pos.x, pos.y, m_santa.get_position(), m_dirt);
+	}
+	if (MouseL.pressed())
+	{
+		Point pos = m_correct_click_pos(Cursor::Pos());
+		m_world.remove_block(pos.x, pos.y, m_santa.get_position());
+	}
+}
+
+
+///////////////////////////////////
+//  クリック位置補正
+///////////////////////////////////
+Point Game::m_correct_click_pos(Point pos)
+{
+	// ワールド外にマウスが行っているときは補正
+	if (pos.x <= 0)
+	{
+		pos.x = 1;
+	}
+	if (pos.y <= 0)
+	{
+		pos.y = 1;
+	}
+	if (pos.x >= MAX_X * ONE_PIXEL)
+	{
+		pos.x = MAX_X * ONE_PIXEL - 1;
+	}
+	if (pos.y >= MAX_Y * ONE_PIXEL)
+	{
+		pos.y = MAX_Y * ONE_PIXEL - 1;
+	}
+
+	return pos;
 }
 
 
@@ -81,7 +124,12 @@ void Game::draw() const
 // アングル1
 void Game::m_angle1() const
 {
+	World world = m_world;
 	Santa santa = m_santa;
+
+	// ワールド
+	world.draw(santa.get_position());
+
 	// サンタ
 	santa.draw(1);
 
@@ -92,7 +140,12 @@ void Game::m_angle1() const
 // アングル2
 void Game::m_angle2() const
 {
+	World world = m_world;
 	Santa santa = m_santa;
+
+	// ワールド
+	world.draw(santa.get_position());
+
 	// サンタ
 	santa.draw(2);
 

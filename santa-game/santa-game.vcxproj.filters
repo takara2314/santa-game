@@ -136,6 +136,9 @@
     <Filter Include="Resource Files\engine\font\min">
       <UniqueIdentifier>{1b103960-f11a-4515-b4f1-f59333ce00d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\items">
+      <UniqueIdentifier>{37bb4d4e-0b15-49db-a843-ef8a8e3f7093}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -241,6 +244,15 @@
     </Image>
     <Image Include="App\santa_front.png">
       <Filter>Resource Files\example</Filter>
+    </Image>
+    <Image Include="App\items\brick.png">
+      <Filter>Resource Files\items</Filter>
+    </Image>
+    <Image Include="App\items\dirt.png">
+      <Filter>Resource Files\items</Filter>
+    </Image>
+    <Image Include="App\items\grass.png">
+      <Filter>Resource Files\items</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
