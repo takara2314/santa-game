@@ -12,14 +12,16 @@ private:
 
 	int m_angle = 1;
 
+	vector<Item> m_items;
+
 public:
 
 	const double gravity = 9.8;
 
 	Collision collisions;
-	// WorldData world_data;
+	WorldData world_data;
 
-	World(int x, int y, int z);
+	World(int x, int y, int z, vector<Item> items);
 
 	void change_angle(int angle);
 

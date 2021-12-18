@@ -67,7 +67,7 @@ void Game::update()
 	if (MouseR.pressed())
 	{
 		Point pos = m_correct_click_pos(Cursor::Pos());
-		m_world.set_block(pos.x, pos.y, m_santa.get_position(), m_dirt);
+		m_world.set_block(pos.x, pos.y, m_santa.get_position(), m_items[0]);
 	}
 	if (MouseL.pressed())
 	{
@@ -155,4 +155,3 @@ void Game::m_angle2() const
 
 	m_font(U"アングル2").draw(Vec2{ 50, 50 });
 }
-

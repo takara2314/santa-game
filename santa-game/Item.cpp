@@ -4,21 +4,17 @@
 ///////////////////////////////////
 //  コンストラクタ
 ///////////////////////////////////
-Item::Item() {}
-
-Item::Item(String name)
-{
-	m_name = name;
+Item::Item() {
+	name = U"空気";
 }
 
-Item::Item(String name, String texture_path)
+Item::Item(String init_name)
 {
-	m_name = name;
-	m_skin = Texture{ texture_path };
+	name = init_name;
 }
 
-
-///////////////////////////////////
-//  描画処理
-///////////////////////////////////
-void Item::draw() {}
+Item::Item(String init_name, String texture_path)
+{
+	name = init_name;
+	skin = Texture{ texture_path };
+}

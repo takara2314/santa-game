@@ -8,16 +8,15 @@ class Item
 {
 private:
 
-	String m_name = U"空気";
-	Texture m_skin;
-
 public:
+
+	String name = U"空気";
+	Texture skin;
 
 	Item();
 
-	Item(String name);
+	Item(String init_name);
 
-	Item(String name, String texture_path);
+	Item(String init_name, String texture_path);
 
-	void draw();
 };

@@ -11,9 +11,15 @@
 class Game : public SantaGame::Scene
 {
 private:
+	// アイテム情報
+	vector<Item> m_items = {
+		Item{ U"土ブロック", U"items/dirt.png" },
+		Item{ U"草ブロック", U"items/grass.png" },
+		Item{ U"レンガブロック", U"items/brick.png" },
+	};
 
 	// ワールド
-	World m_world = World{MAX_X, MAX_Y, MAX_Z};
+	World m_world = World{MAX_X, MAX_Y, MAX_Z, m_items};
 	Collision m_collisions = m_world.collisions;
 	const double m_gravity = m_world.gravity;
 
@@ -31,11 +37,6 @@ private:
 	Point m_correct_click_pos(Point pos);
 
 	const Font m_font{50};
-
-	// アイテム情報
-	Item m_dirt{ U"土ブロック", U"items/dirt.png" };
-	Item m_grass{ U"草ブロック", U"items/grass.png" };
-	Item m_brick{ U"レンガブロック", U"items/brick.png" };
 
 public:
 

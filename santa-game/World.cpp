@@ -5,10 +5,14 @@
 ///////////////////////////////////
 //  コンストラクタ
 ///////////////////////////////////
-World::World(int x, int y, int z)
+World::World(int x, int y, int z, vector<Item> items)
 {
+	m_items = items;
+
 	// 当たり判定メンバを初期化
 	collisions = Collision(x, vector<vector<bool>>(y, vector<bool>(z)));
+	// ワールドデータメンバを初期化
+	world_data = WorldData(x, vector<vector<Item>>(y, vector<Item>(z)));
 
 	for (int i = 0; i < x; ++i)
 	{
@@ -76,8 +80,18 @@ void World::draw(Vec3 player_pos)
 			for (int j = 0; j < MAX_X; ++j)
 			{
 				bool collision = collisions[j][i][static_cast<size_t>(player_pos.z + 0.5)];
+				Item item = world_data[j][i][static_cast<size_t>(player_pos.z + 0.5)];
 
-				if (collision)
+				if (item.name != U"空気")
+				{
+					item.skin.draw(
+						j * ONE_PIXEL,
+						ONE_PIXEL * (MAX_Y - 1 - i)
+					);
+				}
+
+				// デバッグ用
+				/*if (collision)
 				{
 					Rect{
 						j * ONE_PIXEL,
@@ -86,7 +100,7 @@ void World::draw(Vec3 player_pos)
 						ONE_PIXEL
 					}
 					.draw(Color(0, 255, 0, 128));
-				}
+				}*/
 			}
 		}
 	}
@@ -97,8 +111,18 @@ void World::draw(Vec3 player_pos)
 			for (int j = 0; j < MAX_Z; ++j)
 			{
 				bool collision = collisions[static_cast<size_t>(player_pos.x + 0.5)][i][j];
+				Item item = world_data[j][i][static_cast<size_t>(player_pos.z + 0.5)];
 
-				if (collision)
+				if (item.name != U"空気")
+				{
+					item.skin.draw(
+						j * ONE_PIXEL,
+						ONE_PIXEL * (MAX_Y - 1 - i)
+					);
+				}
+
+				// デバッグ用
+				/*if (collision)
 				{
 					Rect{
 						j * ONE_PIXEL,
@@ -107,7 +131,7 @@ void World::draw(Vec3 player_pos)
 						ONE_PIXEL
 					}
 					.draw(Color(0, 255, 0, 128));
-				}
+				}*/
 			}
 		}
 	}
@@ -145,7 +169,7 @@ void World::set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block)
 	// Print << U"click " << mouse_x << U" " << mouse_y;
 	Print << U"設置 " << x << U" " << y << U" " << z;
 
-	// world_data[x][y][z] = block;
+	world_data[x][y][z] = block;
 	collisions[x][y][z] = true;
 }
 
@@ -169,7 +193,6 @@ void World::remove_block(int mouse_x, int mouse_y, Vec3 player_pos)
 		z = static_cast<size_t>(mouse_x / ONE_PIXEL);
 	}
 
-	// world_data[x][y][z] = Item{U"空気"};
+	world_data[x][y][z] = Item{};
 	collisions[x][y][z] = false;
 }
-

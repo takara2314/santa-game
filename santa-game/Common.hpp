@@ -33,4 +33,4 @@ const int ONE_PIXEL = 48;
 using Collision = vector<vector<vector<bool>>>;
 
 // ワールドデータ型
-// using WorldData = array<array<array<Item, MAX_Z>, MAX_Y>, MAX_X >;
+using WorldData = vector<vector<vector<Item>>>;
