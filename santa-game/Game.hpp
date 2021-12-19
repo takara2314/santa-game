@@ -14,6 +14,7 @@ private:
 
 	// アイテム情報
 	vector<Item> m_items = {
+		Item{ U"空気" },
 		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
 		Item{ U"草ブロック", U"items/grass.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
 		Item{ U"レンガブロック", U"items/brick.png", U"se/touch_to_stone.mp3", U"se/walk_on_brick.mp3" },

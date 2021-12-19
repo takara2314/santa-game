@@ -9,18 +9,39 @@ World::World(int x, int y, int z, vector<Item> items)
 {
 	m_items = items;
 
+	// ワールドデータ読み込み
+	m_load_world_data(x, y, z);
+}
+
+
+///////////////////////////////////
+//  ワールドデータ読み込み
+///////////////////////////////////
+void World::m_load_world_data(int x, int y, int z)
+{
 	// 当たり判定メンバを初期化
 	collisions = Collision(x, vector<vector<bool>>(y, vector<bool>(z)));
 	// ワールドデータメンバを初期化
 	world_data = WorldData(x, vector<vector<Item>>(y, vector<Item>(z)));
 
-	for (int i = 0; i < x; ++i)
+	// ワールドファイル読み込み
+	for (int i = 0; i < z; ++i)
 	{
-		for (int j = 0; j < y; ++j)
+		CSV data{ Unicode::Widen(format("world/{:d}.csv", i)) };
+
+		for (int j = 0; j < data.rows(); ++j)
 		{
-			for (int k = 0; k < z; ++k)
+			for (int k = 0; k < data[j].size(); ++k)
 			{
-				collisions[i][j][k] = false;
+				size_t item_id = Parse<size_t>(data[j][k]);
+
+				// そのアイテムを設置
+				world_data[k][MAX_Y - 1 - j][i] = m_items[item_id];
+				if (item_id != 0)
+				{
+					// 空気以外なら当たり判定
+					collisions[k][MAX_Y - 1 - j][i] = true;
+				}
 			}
 		}
 	}

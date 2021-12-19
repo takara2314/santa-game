@@ -305,6 +305,10 @@
     <None Include="App\example\toml\config.toml" />
     <None Include="App\example\toml\test.toml" />
     <None Include="App\example\zip\zip_test.zip" />
+    <None Include="App\world\0.csv" />
+    <None Include="App\world\1.csv" />
+    <None Include="App\world\2.csv" />
+    <None Include="App\world\3.csv" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\shot.mp3" />

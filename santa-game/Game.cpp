@@ -30,19 +30,19 @@ void Game::update()
 	// プレイヤーの操作
 	if (KeyDown.pressed())
 	{
-		m_santa.move(0, 4.0, m_collisions, m_world_data, m_items[2].walk_sound, m_angle);
+		m_santa.move(0, 4.0, m_collisions, m_world_data, m_items[3].walk_sound, m_angle);
 	}
 	if (KeyLeft.pressed())
 	{
-		m_santa.move(1, 4.0, m_collisions, m_world_data, m_items[2].walk_sound, m_angle);
+		m_santa.move(1, 4.0, m_collisions, m_world_data, m_items[3].walk_sound, m_angle);
 	}
 	if (KeyRight.pressed())
 	{
-		m_santa.move(2, 4.0, m_collisions, m_world_data, m_items[2].walk_sound, m_angle);
+		m_santa.move(2, 4.0, m_collisions, m_world_data, m_items[3].walk_sound, m_angle);
 	}
 	if (KeyUp.pressed())
 	{
-		m_santa.move(3, 4.0, m_collisions, m_world_data, m_items[2].walk_sound, m_angle);
+		m_santa.move(3, 4.0, m_collisions, m_world_data, m_items[3].walk_sound, m_angle);
 	}
 	if (KeySpace.pressed())
 	{
@@ -73,7 +73,7 @@ void Game::update()
 	if (MouseR.pressed())
 	{
 		Point pos = m_correct_click_pos(Cursor::Pos());
-		m_world.set_block(pos.x, pos.y, m_santa.get_position(), m_items[0]);
+		m_world.set_block(pos.x, pos.y, m_santa.get_position(), m_items[1]);
 	}
 	if (MouseL.pressed())
 	{

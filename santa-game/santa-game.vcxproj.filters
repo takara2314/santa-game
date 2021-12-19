@@ -142,6 +142,9 @@
     <Filter Include="Resource Files\se">
       <UniqueIdentifier>{51895196-712e-4cd0-bf70-222a525d58a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\world">
+      <UniqueIdentifier>{d8e42486-6675-4b71-9a10-0194e93717aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -770,6 +773,18 @@
     </None>
     <None Include="App\engine\font\min\siv3d-min.woff">
       <Filter>Resource Files\engine\font\min</Filter>
+    </None>
+    <None Include="App\world\0.csv">
+      <Filter>Resource Files\world</Filter>
+    </None>
+    <None Include="App\world\1.csv">
+      <Filter>Resource Files\world</Filter>
+    </None>
+    <None Include="App\world\2.csv">
+      <Filter>Resource Files\world</Filter>
+    </None>
+    <None Include="App\world\3.csv">
+      <Filter>Resource Files\world</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

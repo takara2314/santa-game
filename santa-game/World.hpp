@@ -14,6 +14,8 @@ private:
 
 	vector<Item> m_items;
 
+	void m_load_world_data(int x, int y, int z);
+
 public:
 
 	const double gravity = 9.8;

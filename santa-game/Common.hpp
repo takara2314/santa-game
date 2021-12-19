@@ -23,7 +23,7 @@ using SantaGame = SceneManager<State, GameData>;
 
 // ワールドの最大幅
 const int MAX_X = 12;
-const int MAX_Y = 10;
+const int MAX_Y = 12;
 const int MAX_Z = 4;
 
 // 1ブロックピクセル
