@@ -1,29 +1,15 @@
 ﻿#pragma once
 #include "Common.hpp"
 #include "Item.hpp"
+#include "Human.hpp"
 
 
 ///////////////////////////////////
 //  サンタクラス
 ///////////////////////////////////
-class Santa
+class Santa : public Human
 {
 private:
-
-	// テクスチャ画像
-	Texture m_skin{ U"santa.png" };
-
-	// 位置
-	Vec3 m_position{ 0.0, 3.0, 0.0 };
-
-	// 身長
-	const double m_height = 1.65;
-
-	// 横幅
-	const double m_width = 1.0;
-		
-	// 向き
-	int m_direction = 0;
 
 	// 接地しているか
 	bool m_is_ground = true;
@@ -41,14 +27,9 @@ private:
 	// インベントリ
 	Array<Item> m_inventory;
 
-	// 小数部分だけ取り出す
-	double m_pick_decimal(double num);
-
 public:
 
-	Santa(double y_acceleration);
-
-	Vec3 get_position();
+	Santa(Texture skin, double y_acceleration);
 
 	void move(int direction, double quantity, Collision collisions, WorldData world_data, Audio& init_walk_sound, int angle);
 
@@ -56,9 +37,6 @@ public:
 
 	void move_y(Collision collisions);
 
-	void change_angle(int from, int to);
-
 	void check_ground(Collision collisions);
 
-	void draw(int angle);
 };

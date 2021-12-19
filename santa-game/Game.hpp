@@ -30,7 +30,7 @@ private:
 	const double m_gravity = m_world.gravity;
 
 	// サンタ
-	Santa m_santa = Santa{ m_world.gravity };
+	Santa m_santa = Santa{ Texture{ U"santa.png" }, m_world.gravity };
 
 	// アングル
 	int m_angle = 1;

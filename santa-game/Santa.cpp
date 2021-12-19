@@ -1,33 +1,27 @@
 ﻿#include "Common.hpp"
 #include "Santa.hpp"
+#include "Human.hpp"
 
 
 ///////////////////////////////////
 //  コンストラクタ
 ///////////////////////////////////
-Santa::Santa(double y_acceleration)
+Santa::Santa(Texture skin, double y_acceleration)
 {
 	m_y_acceleration = y_acceleration;
+	Human::skin = skin;
 }
 
-
-///////////////////////////////////
-//  座標を受け取る
-///////////////////////////////////
-Vec3 Santa::get_position()
-{
-	return m_position;
-}
 
 ///////////////////////////////////
 //  移動処理
 ///////////////////////////////////
 void Santa::move(int direction, double quantity, Collision collisions, WorldData world_data, Audio& init_walk_sound, int angle)
 {
-	Vec3 position = m_position;
+	Vec3 position = Human::position;
 
 	// 向きを更新
-	m_direction = direction;
+	Human::direction = direction;
 
 	// 移動量をフレーム経過依存に
 	quantity *= Scene::DeltaTime();
@@ -35,7 +29,7 @@ void Santa::move(int direction, double quantity, Collision collisions, WorldData
 	// アングル1の時の位置操作
 	if (angle == 1)
 	{
-		switch (direction)
+		switch (Human::direction)
 		{
 		case 0:
 			position.z -= quantity;
@@ -55,7 +49,7 @@ void Santa::move(int direction, double quantity, Collision collisions, WorldData
 	// アングル2の時の位置操作
 	if (angle == 2)
 	{
-		switch (direction)
+		switch (Human::direction)
 		{
 		case 0:
 			position.x += quantity;
@@ -90,7 +84,7 @@ void Santa::move(int direction, double quantity, Collision collisions, WorldData
 	size_t z = static_cast<size_t>(position.z + 0.5);
 
 	// yの小数部分が0.9~1.0ならインクリメントして考える
-	if (m_pick_decimal(position.y) >= 0.9 && m_pick_decimal(position.y) < 1.0)
+	if (Human::pick_decimal(position.y) >= 0.9 && Human::pick_decimal(position.y) < 1.0)
 	{
 		y++;
 	}
@@ -98,33 +92,33 @@ void Santa::move(int direction, double quantity, Collision collisions, WorldData
 	// 足元か頭上に当たり判定があればキャンセル
 	if (angle == 1)
 	{
-		if (m_direction == 1)
+		if (Human::direction == 1)
 		{
-			double temp = position.x + 0.5 - m_width / 2;
+			double temp = position.x + 0.5 - Human::width / 2;
 			x = static_cast<size_t>(temp < 0 ? 0 : temp);
 		}
-		else if (m_direction == 2)
+		else if (Human::direction == 2)
 		{
-			x = Min(static_cast<size_t>(position.x + 0.5 + m_width / 2), static_cast<size_t>(MAX_X - 1));
+			x = Min(static_cast<size_t>(position.x + 0.5 + Human::width / 2), static_cast<size_t>(MAX_X - 1));
 		}
 	}
 	else
 	{
-		if (m_direction == 1)
+		if (Human::direction == 1)
 		{
-			double temp = position.z + 0.5 - m_width / 2;
+			double temp = position.z + 0.5 - Human::width / 2;
 			z = static_cast<size_t>(temp < 0 ? 0 : temp);
 		}
-		else if (m_direction == 2)
+		else if (Human::direction == 2)
 		{
-			z = Min(static_cast<size_t>(position.z + 0.5 + m_width / 2), static_cast<size_t>(MAX_Z - 1));
+			z = Min(static_cast<size_t>(position.z + 0.5 + Human::width / 2), static_cast<size_t>(MAX_Z - 1));
 		}
 	}
 
 
 	bool collision_underfoot = collisions[x][y][z];
 
-	size_t y_overhead = Min(static_cast<size_t>(m_position.y + m_height), static_cast<size_t>(MAX_Y - 1));
+	size_t y_overhead = Min(static_cast<size_t>(position.y + Human::height), static_cast<size_t>(MAX_Y - 1));
 	// Print << U"移動先: " << Unicode::Widen(format("({:d}, {:d}, {:d})", static_cast<int>(x), static_cast<int>(y), static_cast<int>(z)));
 
 	bool collision_overhead = collisions[x][y_overhead][z];
@@ -147,7 +141,7 @@ void Santa::move(int direction, double quantity, Collision collisions, WorldData
 	}
 
 	// 適応
-	m_position = position;
+	Human::position = position;
 }
 
 
@@ -156,7 +150,7 @@ void Santa::move(int direction, double quantity, Collision collisions, WorldData
 ///////////////////////////////////
 void Santa::jump(Collision collisions)
 {
-	Vec3 position = m_position;
+	Vec3 position = Human::position;
 
 	if (m_is_ground && !m_is_jump)
 	{
@@ -171,7 +165,7 @@ void Santa::jump(Collision collisions)
 	position.y = Max(position.y, 0.0);
 
 	// 適応
-	m_position = position;
+	Human::position = position;
 }
 
 
@@ -180,7 +174,7 @@ void Santa::jump(Collision collisions)
 ///////////////////////////////////
 void Santa::move_y(Collision collisions)
 {
-	Vec3 position = m_position;
+	Vec3 position = Human::position;
 
 	// ジャンプ中
 	if (m_is_jump)
@@ -193,9 +187,9 @@ void Santa::move_y(Collision collisions)
 		}
 
 		// <身長>ブロック上にブロックがあればキャンセル
-		size_t x = static_cast<size_t>(m_position.x + 0.5);
-		size_t y = Min(static_cast<size_t>(m_position.y + m_height), static_cast<size_t>(MAX_Y - 1));
-		size_t z = static_cast<size_t>(m_position.z + 0.5);
+		size_t x = static_cast<size_t>(position.x + 0.5);
+		size_t y = Min(static_cast<size_t>(position.y + Human::height), static_cast<size_t>(MAX_Y - 1));
+		size_t z = static_cast<size_t>(position.z + 0.5);
 
 		bool collision = collisions[x][y][z];
 
@@ -219,7 +213,7 @@ void Santa::move_y(Collision collisions)
 	else if (!m_is_jump)
 	{
 		m_y_speed = 0.0;
-		if (m_pick_decimal(position.y) >= 0.5)
+		if (Human::pick_decimal(position.y) >= 0.5)
 		{
 			position.y = static_cast<int>(position.y) + 1.0;
 		}
@@ -230,55 +224,7 @@ void Santa::move_y(Collision collisions)
 	position.y = Max(position.y, 0.0);
 
 	// 適応
-	m_position = position;
-}
-
-
-// 小数部分だけ取り出す
-double Santa::m_pick_decimal(double num)
-{
-	return num - static_cast<int>(num);
-}
-
-
-
-///////////////////////////////////
-//  向きを変更
-///////////////////////////////////
-void Santa::change_angle(int from, int to)
-{
-	if (from == 1 && to == 2 && m_direction == 0)
-	{
-		m_direction = 1;
-	}
-	else if (from == 1 && to == 2 && m_direction == 1)
-	{
-		m_direction = 3;
-	}
-	else if (from == 1 && to == 2 && m_direction == 2)
-	{
-		m_direction = 0;
-	}
-	else if (from == 1 && to == 2 && m_direction == 3)
-	{
-		m_direction = 2;
-	}
-	else if (from == 2 && to == 1 && m_direction == 0)
-	{
-		m_direction = 2;
-	}
-	else if (from == 2 && to == 1 && m_direction == 1)
-	{
-		m_direction = 0;
-	}
-	else if (from == 2 && to == 1 && m_direction == 2)
-	{
-		m_direction = 3;
-	}
-	else if (from == 2 && to == 1 && m_direction == 3)
-	{
-		m_direction = 1;
-	}
+	Human::position = position;
 }
 
 
@@ -294,7 +240,7 @@ void Santa::check_ground(Collision collisions)
 	}
 
 	// 0は絶対ある
-	if (m_position.y == 0)
+	if (position.y == 0)
 	{
 		m_is_ground = true;
 		return;
@@ -302,9 +248,9 @@ void Santa::check_ground(Collision collisions)
 
 	// その位置に当たり判定があれば
 	bool collision = collisions
-		[static_cast<size_t>(m_position.x + 0.5)]
-		[static_cast<size_t>(m_position.y)]
-		[static_cast<size_t>(m_position.z + 0.5)];
+		[static_cast<size_t>(position.x + 0.5)]
+		[static_cast<size_t>(position.y)]
+		[static_cast<size_t>(position.z + 0.5)];
 
 	if (collision)
 	{
@@ -313,57 +259,4 @@ void Santa::check_ground(Collision collisions)
 	}
 
 	m_is_ground = false;
-}
-
-
-///////////////////////////////////
-//  描画処理
-///////////////////////////////////
-void Santa::draw(int angle)
-{
-	ScopedRenderStates2D renderState(SamplerState::ClampNearest);
-
-	// 描画座標
-	Vec2 draw_pos{};
-
-	switch (angle)
-	{
-	case 1:
-		draw_pos = Vec2{ m_position.x, MAX_Y - m_position.y };
-		break;
-	case 2:
-		draw_pos = Vec2{ m_position.z, MAX_Y - m_position.y };
-		break;
-	}
-
-	// 両足の状態
-	size_t walk_progress;
-	if ((m_direction == 0 || m_direction == 3) && angle == 1)
-	{
-		walk_progress = static_cast<size_t>((m_position.z - static_cast<int>(m_position.z)) * 3);
-	}
-	else if ((m_direction == 1 || m_direction == 2) && angle == 1)
-	{
-		walk_progress = static_cast<size_t>((m_position.x - static_cast<int>(m_position.x)) * 3);
-	}
-	else if ((m_direction == 0 || m_direction == 3) && angle == 2)
-	{
-		walk_progress = static_cast<size_t>((m_position.x - static_cast<int>(m_position.x)) * 3);
-	}
-	else
-	{
-		walk_progress = static_cast<size_t>((m_position.z - static_cast<int>(m_position.z)) * 3);
-	}
-
-	// サンタを描画
-	m_skin(
-		Vec2{ 32 * walk_progress, 32 * m_direction },
-		32,
-		32
-	)
-		.scaled(2.5)
-		.drawAt(
-			(draw_pos * ONE_PIXEL)
-				.movedBy(Vec2{ ONE_PIXEL / 2, -40 })
-		);
 }
