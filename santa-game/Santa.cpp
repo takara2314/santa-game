@@ -14,29 +14,14 @@ Santa::Santa(Texture skin, double y_acceleration, vector<Item> items)
 	m_items = items;
 
 	m_inventory[0] = {
-		Item{ U"プレゼントボックス", U"items/present.png", U"se/touch_to_present.mp3", U"se/walk_on_grass.mp3" },
+		m_items[5],
 		1
 	};
 
 	m_inventory[1] = {
-		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
+		m_items[1],
 		16
 	};
-
-	/*m_inventory[2] = {
-		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
-		64
-	};
-
-	m_inventory[3] = {
-		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
-		64
-	};
-
-	m_inventory[4] = {
-		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
-		64
-	};*/
 }
 
 

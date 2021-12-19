@@ -114,7 +114,11 @@ void World::draw(Vec3 player_pos)
 							ColorF(1.0, Max(1.0 - (k - z) * 0.3, 0.0))
 						);
 
-						break;
+						// 透過しないのならここで描画は終了
+						if (item.is_alpha == false)
+						{
+							break;
+						}
 					}
 				}
 
@@ -152,7 +156,11 @@ void World::draw(Vec3 player_pos)
 							ColorF(1.0, Max(1.0 - (x - k) * 0.3, 0.0))
 						);
 
-						break;
+						// 透過しないのならここで描画は終了
+						if (item.is_alpha == false)
+						{
+							break;
+						}
 					}
 				}
 
