@@ -36,4 +36,11 @@ using Collision = vector<vector<vector<bool>>>;
 using WorldData = vector<vector<vector<Item>>>;
 
 // インベントリ
-using Inventory = array<tuple<Item, int>, 5>;
+struct Slot
+{
+	Item item = Item{};
+	int quantity = 0;
+};
+
+using Inventory = array<Slot, 5>;
+

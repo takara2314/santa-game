@@ -11,9 +11,6 @@ void Main()
 	// タイトルを設定
 	Window::SetTitle(U"サンタさんのおしごと");
 
-	// 背景色を設定
-	Scene::SetBackground(Color(239, 68, 68));
-
 	// 使用するフォントアセットを登録
 	FontAsset::Register(U"Title", 60, U"001Shirokuma-Regular.otf");
 	FontAsset::Register(U"Menu", 30, Typeface::Regular);

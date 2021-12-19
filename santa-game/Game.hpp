@@ -33,7 +33,7 @@ private:
 	const double m_gravity = m_world.gravity;
 
 	// サンタ
-	Santa m_santa = Santa{ Texture{ U"santa.png" }, m_world.gravity };
+	Santa m_santa = Santa{ Texture{ U"santa.png" }, m_world.gravity, m_items };
 	// 子供
 	Child m_child = Child{ Texture{ U"child.png" } };
 

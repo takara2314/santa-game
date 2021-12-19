@@ -6,11 +6,12 @@
 ///////////////////////////////////
 //  コンストラクタ
 ///////////////////////////////////
-Santa::Santa(Texture skin, double y_acceleration)
+Santa::Santa(Texture skin, double y_acceleration, vector<Item> items)
 {
 	Human::skin = skin;
 	Human::position = Vec3{ 0.0, 3.0, 1.0 };
 	m_y_acceleration = y_acceleration;
+	m_items = items;
 
 	m_inventory[0] = {
 		Item{ U"プレゼントボックス", U"items/present.png", U"se/touch_to_present.mp3", U"se/walk_on_grass.mp3" },
@@ -19,10 +20,10 @@ Santa::Santa(Texture skin, double y_acceleration)
 
 	m_inventory[1] = {
 		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
-		64
+		16
 	};
 
-	m_inventory[2] = {
+	/*m_inventory[2] = {
 		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
 		64
 	};
@@ -35,7 +36,7 @@ Santa::Santa(Texture skin, double y_acceleration)
 	m_inventory[4] = {
 		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
 		64
-	};
+	};*/
 }
 
 
@@ -294,4 +295,73 @@ void Santa::check_ground(Collision collisions)
 Inventory Santa::get_inventory()
 {
 	return m_inventory;
+}
+
+
+///////////////////////////////////
+//   アイテムを与える
+///////////////////////////////////
+void Santa::give_item(int selection, Item& item, int quantity)
+{
+	Slot slot = m_inventory[selection];
+
+	struct LocalFunc
+	{
+		static bool insert_slot(Inventory& inventory, Item& item, int quantity, int selection)
+		{
+			// そのスロットに何もない場合はそこに入れる
+			if (inventory[selection].item.name == U"空気")
+			{
+				inventory[selection].item = item;
+				inventory[selection].quantity = quantity;
+				return true;
+			}
+
+			// アイテムが一致した場合は加算
+			if (inventory[selection].item.name == item.name)
+			{
+				inventory[selection].quantity += quantity;
+				return true;
+			}
+
+			return false;
+		}
+	};
+
+	// 選択中のスロットに入れれるか
+	if (LocalFunc::insert_slot(m_inventory, item, quantity, selection))
+	{
+		return;
+	}
+
+	// 他のスロットに入れれれば入れる
+	for (int i = 0; i < m_inventory.size(); ++i)
+	{
+		if (LocalFunc::insert_slot(m_inventory, item, quantity, i))
+		{
+			return;
+		}
+	}
+
+	// もうどうしようもない
+	return;
+}
+
+
+///////////////////////////////////
+//  アイテムを削除する
+///////////////////////////////////
+void Santa::remove_item(int selection, int quantity)
+{
+	Slot slot = m_inventory[selection];
+
+	// もう消せそうな数のとき
+	if (slot.quantity - quantity <= 0)
+	{
+		m_inventory[selection].item = Item{};
+		m_inventory[selection].quantity = 0;
+		return;
+	}
+
+	m_inventory[selection].quantity -= quantity;
 }

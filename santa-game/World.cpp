@@ -62,7 +62,7 @@ void World::change_angle(int angle)
 ///////////////////////////////////
 void World::draw(Vec3 player_pos)
 {
-	// デバッグ線
+	// デバッグ用 (ブロックとの境目を描画)
 	for (int i = 0; i < MAX_X; ++i)
 	{
 		for (int j = 0; j < MAX_Y; ++j)
@@ -77,7 +77,7 @@ void World::draw(Vec3 player_pos)
 						ONE_PIXEL,
 						ONE_PIXEL
 					}
-					.drawFrame(3, Color(255, 0, 0));
+					.drawFrame(3, Color(150, 206, 214));
 				}
 				else
 				{
@@ -87,13 +87,13 @@ void World::draw(Vec3 player_pos)
 						ONE_PIXEL,
 						ONE_PIXEL
 					}
-					.drawFrame(3, Color(255, 0, 0));
+					.drawFrame(3, Color(150, 206, 214));
 				}
 			}
 		}
 	}
 
-	// 当たり判定
+	// ブロックを描画
 	if (m_angle == 1)
 	{
 		for (int i = 0; i < MAX_Y; ++i)
@@ -118,7 +118,7 @@ void World::draw(Vec3 player_pos)
 					}
 				}
 
-				// デバッグ用
+				// デバッグ用 (当たり判定を描画)
 				/*if (collision)
 				{
 					Rect{
@@ -156,7 +156,7 @@ void World::draw(Vec3 player_pos)
 					}
 				}
 
-				// デバッグ用
+				// デバッグ用 (当たり判定を描画)
 				/*if (collision)
 				{
 					Rect{
@@ -176,8 +176,14 @@ void World::draw(Vec3 player_pos)
 ///////////////////////////////////
 //  ブロックの設置
 ///////////////////////////////////
-void World::set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block)
+bool World::set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block)
 {
+	// 設置しようとしているブロックが空気ならキャンセル
+	if (block.name == U"空気")
+	{
+		return false;
+	}
+
 	size_t x, y, z;
 	if (m_angle == 1)
 	{
@@ -198,13 +204,13 @@ void World::set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block)
 		&& y == static_cast<size_t>(player_pos.y)
 		&& z == static_cast<size_t>(player_pos.z + 0.5))
 	{
-		return;
+		return false;
 	}
 
 	// 既にブロックが設置されているならキャンセル
 	if (world_data[x][y][z].name != U"空気")
 	{
-		return;
+		return false;
 	}
 
 	// Print << U"click " << mouse_x << U" " << mouse_y;
@@ -215,13 +221,15 @@ void World::set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block)
 
 	world_data[x][y][z] = block;
 	collisions[x][y][z] = true;
+
+	return true;
 }
 
 
 ///////////////////////////////////
 //  ブロックを破壊
 ///////////////////////////////////
-void World::remove_block(int mouse_x, int mouse_y, Vec3 player_pos)
+tuple<bool, Item> World::remove_block(int mouse_x, int mouse_y, Vec3 player_pos)
 {
 	size_t x, y, z;
 	if (m_angle == 1)
@@ -243,6 +251,10 @@ void World::remove_block(int mouse_x, int mouse_y, Vec3 player_pos)
 		world_data[x][y][z].touch_sound.play();
 	}
 
+	Item removed_block = world_data[x][y][z];
+
 	world_data[x][y][z] = Item{};
 	collisions[x][y][z] = false;
+
+	return { true, removed_block };
 }

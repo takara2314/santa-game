@@ -29,7 +29,7 @@ public:
 
 	void draw(Vec3 player_pos);
 
-	void set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block);
+	bool set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block);
 
-	void remove_block(int mouse_x, int mouse_y, Vec3 player_pos);
+	tuple<bool, Item> remove_block(int mouse_x, int mouse_y, Vec3 player_pos);
 };
