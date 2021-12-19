@@ -11,6 +11,31 @@ Santa::Santa(Texture skin, double y_acceleration)
 	Human::skin = skin;
 	Human::position = Vec3{ 0.0, 3.0, 1.0 };
 	m_y_acceleration = y_acceleration;
+
+	m_inventory[0] = {
+		Item{ U"プレゼントボックス", U"items/present.png", U"se/touch_to_present.mp3", U"se/walk_on_grass.mp3" },
+		1
+	};
+
+	m_inventory[1] = {
+		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
+		64
+	};
+
+	m_inventory[2] = {
+		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
+		64
+	};
+
+	m_inventory[3] = {
+		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
+		64
+	};
+
+	m_inventory[4] = {
+		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
+		64
+	};
 }
 
 
@@ -260,4 +285,13 @@ void Santa::check_ground(Collision collisions)
 	}
 
 	m_is_ground = false;
+}
+
+
+///////////////////////////////////
+//  インベントリを取得
+///////////////////////////////////
+Inventory Santa::get_inventory()
+{
+	return m_inventory;
 }

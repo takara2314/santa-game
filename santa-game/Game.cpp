@@ -82,10 +82,32 @@ void Game::update()
 		m_world.remove_block(pos.x, pos.y, m_santa.get_position());
 	}
 
-	// 1秒～6秒ごとに視点変更
-	if (Scene::Time() - changed_direction_time >= Random(1.0, 6.0))
+	// インベントリ操作
+	if (Key1.pressed())
 	{
-		changed_direction_time = Scene::Time();
+		m_santa.inventory_selection = 1;
+	}
+	if (Key2.pressed())
+	{
+		m_santa.inventory_selection = 2;
+	}
+	if (Key3.pressed())
+	{
+		m_santa.inventory_selection = 3;
+	}
+	if (Key4.pressed())
+	{
+		m_santa.inventory_selection = 4;
+	}
+	if (Key5.pressed())
+	{
+		m_santa.inventory_selection = 5;
+	}
+
+	// 1秒～6秒ごとに視点変更
+	if (Scene::Time() - m_changed_direction_time >= Random(1.0, 6.0))
+	{
+		m_changed_direction_time = Scene::Time();
 		m_child.change_direction_random();
 	}
 }
@@ -136,6 +158,12 @@ void Game::draw() const
 		m_angle2();
 		break;
 	}
+
+	Santa santa = m_santa;
+
+	// インベントリの描画
+	Inventory inventory = santa.get_inventory();
+	m_draw_inventory(inventory, santa.inventory_selection);
 }
 
 
@@ -174,4 +202,47 @@ void Game::m_angle2() const
 	santa.draw(2);
 
 	m_font(U"アングル2").draw(Vec2{ 50, 50 });
+}
+
+
+// インベントリを描画
+void Game::m_draw_inventory(Inventory& inventory, int selection) const
+{
+	// 始点座標
+	Vec2 start = { Scene::Width() - 90, 20 };
+
+	RoundRect{ start, 60, 160, 10 }
+		.draw(Color(0, 0, 0, 50));
+
+	for (int i = 0; i < inventory.size(); ++i)
+	{
+		auto [item, num] = inventory[i];
+
+		if (item.name != U"空気")
+		{
+			// アイテムスキン
+			item.skin
+				.scaled(0.4)
+				.draw(
+					start.movedBy(10, 10 + i * 30)
+				);
+
+			// アイテム数
+			m_item_font(num)
+				.draw(
+					start.movedBy(35, 9 + i * 30)
+				);
+		}
+	}
+
+	// 選択しているところを囲む
+	Vec2 pos = start.movedBy(0, (selection - 1) * 31);
+	RoundRect{
+		static_cast<int>(pos.x),
+		static_cast<int>(pos.y),
+		60,
+		35,
+		10
+	}
+		.drawFrame(3, 0, Color(175, 175, 175));
 }

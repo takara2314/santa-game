@@ -34,3 +34,6 @@ using Collision = vector<vector<vector<bool>>>;
 
 // ワールドデータ型
 using WorldData = vector<vector<vector<Item>>>;
+
+// インベントリ
+using Inventory = array<tuple<Item, int>, 5>;

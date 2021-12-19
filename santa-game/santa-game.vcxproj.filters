@@ -269,6 +269,9 @@
     <Image Include="App\items\bed.png">
       <Filter>Resource Files\items</Filter>
     </Image>
+    <Image Include="App\items\present.png">
+      <Filter>Resource Files\items</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc">
@@ -819,6 +822,9 @@
       <Filter>Resource Files\se</Filter>
     </Media>
     <Media Include="App\se\walk_on_wood.mp3">
+      <Filter>Resource Files\se</Filter>
+    </Media>
+    <Media Include="App\se\touch_to_present.mp3">
       <Filter>Resource Files\se</Filter>
     </Media>
   </ItemGroup>

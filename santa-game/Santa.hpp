@@ -24,7 +24,7 @@ private:
 	double m_y_speed = 0.0;
 
 	// インベントリ
-	Array<Item> m_inventory;
+	Inventory m_inventory;
 
 public:
 
@@ -38,4 +38,7 @@ public:
 
 	void check_ground(Collision collisions);
 
+	Inventory get_inventory();
+
+	int inventory_selection = 1;
 };
