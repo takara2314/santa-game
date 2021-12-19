@@ -266,6 +266,9 @@
     <Image Include="App\items\grass.png">
       <Filter>Resource Files\items</Filter>
     </Image>
+    <Image Include="App\items\bed.png">
+      <Filter>Resource Files\items</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc">

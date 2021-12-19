@@ -152,6 +152,7 @@
     <Image Include="App\example\windmill.png" />
     <Image Include="App\ground.png" />
     <Image Include="App\icon.ico" />
+    <Image Include="App\items\bed.png" />
     <Image Include="App\items\brick.png" />
     <Image Include="App\items\dirt.png" />
     <Image Include="App\items\grass.png" />

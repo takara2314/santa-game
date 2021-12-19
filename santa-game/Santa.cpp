@@ -8,8 +8,9 @@
 ///////////////////////////////////
 Santa::Santa(Texture skin, double y_acceleration)
 {
-	m_y_acceleration = y_acceleration;
 	Human::skin = skin;
+	Human::position = Vec3{ 0.0, 3.0, 1.0 };
+	m_y_acceleration = y_acceleration;
 }
 
 

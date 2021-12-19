@@ -2,6 +2,7 @@
 #include "Common.hpp"
 #include "World.hpp"
 #include "Santa.hpp"
+#include "Child.hpp"
 #include "Item.hpp"
 
 
@@ -18,6 +19,7 @@ private:
 		Item{ U"土ブロック", U"items/dirt.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
 		Item{ U"草ブロック", U"items/grass.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
 		Item{ U"レンガブロック", U"items/brick.png", U"se/touch_to_stone.mp3", U"se/walk_on_brick.mp3" },
+		Item{ U"ベッド", U"items/bed.png", U"se/touch_to_grass.mp3", U"se/walk_on_grass.mp3" },
 	};
 
 	// BGM
@@ -31,6 +33,8 @@ private:
 
 	// サンタ
 	Santa m_santa = Santa{ Texture{ U"santa.png" }, m_world.gravity };
+	// 子供
+	Child m_child = Child{ Texture{ U"child.png" } };
 
 	// アングル
 	int m_angle = 1;
@@ -43,6 +47,9 @@ private:
 	Point m_correct_click_pos(Point pos);
 
 	const Font m_font{50};
+
+	// 前回の視点変更
+	double changed_direction_time = 0.0;
 
 public:
 

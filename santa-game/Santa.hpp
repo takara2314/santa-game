@@ -13,7 +13,6 @@ private:
 
 	// 接地しているか
 	bool m_is_ground = true;
-
 	// ジャンプしているか
 	bool m_is_jump = false;
 

@@ -1,5 +1,6 @@
 ﻿#include "Game.hpp"
 #include "Santa.hpp"
+#include "Child.hpp"
 
 
 ///////////////////////////////////
@@ -80,6 +81,13 @@ void Game::update()
 		Point pos = m_correct_click_pos(Cursor::Pos());
 		m_world.remove_block(pos.x, pos.y, m_santa.get_position());
 	}
+
+	// 1秒～6秒ごとに視点変更
+	if (Scene::Time() - changed_direction_time >= Random(1.0, 6.0))
+	{
+		changed_direction_time = Scene::Time();
+		m_child.change_direction_random();
+	}
 }
 
 
@@ -136,10 +144,13 @@ void Game::m_angle1() const
 {
 	World world = m_world;
 	Santa santa = m_santa;
+	Child child = m_child;
 
 	// ワールド
 	world.draw(santa.get_position());
 
+	// 子供
+	child.draw(1, santa.get_position());
 	// サンタ
 	santa.draw(1);
 
@@ -152,10 +163,13 @@ void Game::m_angle2() const
 {
 	World world = m_world;
 	Santa santa = m_santa;
+	Child child = m_child;
 
 	// ワールド
 	world.draw(santa.get_position());
 
+	// 子供
+	child.draw(2, santa.get_position());
 	// サンタ
 	santa.draw(2);
 
