@@ -215,6 +215,34 @@ bool World::set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block)
 		return false;
 	}
 
+	// プレイヤーの位置から離れすぎているところには設置できない
+	int player_pos_x_draw = (player_pos.x + 0.5) * ONE_PIXEL;
+	int player_pos_y_draw = (MAX_Y - 1 - player_pos.y) * ONE_PIXEL;
+	int player_pos_z_draw = (player_pos.z + 0.5) * ONE_PIXEL;
+
+	if (m_angle == 1)
+	{
+		if (abs(mouse_x - player_pos_x_draw) >= m_max_place_limit * ONE_PIXEL)
+		{
+			return false;
+		}
+		if (abs(mouse_y - player_pos_y_draw) >= m_max_place_limit * ONE_PIXEL)
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if (abs(mouse_x - player_pos_z_draw) >= m_max_place_limit * ONE_PIXEL)
+		{
+			return false;
+		}
+		if (abs(mouse_y - player_pos_y_draw) >= m_max_place_limit * ONE_PIXEL)
+		{
+			return false;
+		}
+	}
+
 	// 既にブロックが設置されているならキャンセル
 	if (world_data[x][y][z].name != U"空気")
 	{
@@ -251,6 +279,34 @@ tuple<bool, Item> World::remove_block(int mouse_x, int mouse_y, Vec3 player_pos)
 		x = static_cast<size_t>(player_pos.x + 0.5);
 		y = static_cast<size_t>((MAX_Y * ONE_PIXEL - mouse_y) / ONE_PIXEL);
 		z = static_cast<size_t>(mouse_x / ONE_PIXEL);
+	}
+
+	// プレイヤーの位置から離れすぎているところには壊せない
+	int player_pos_x_draw = (player_pos.x + 0.5) * ONE_PIXEL;
+	int player_pos_y_draw = (MAX_Y - 1 - player_pos.y) * ONE_PIXEL;
+	int player_pos_z_draw = (player_pos.z + 0.5) * ONE_PIXEL;
+
+	if (m_angle == 1)
+	{
+		if (abs(mouse_x - player_pos_x_draw) >= m_max_place_limit * ONE_PIXEL)
+		{
+			return { false, Item{} };
+		}
+		if (abs(mouse_y - player_pos_y_draw) >= m_max_place_limit * ONE_PIXEL)
+		{
+			return { false, Item{} };
+		}
+	}
+	else
+	{
+		if (abs(mouse_x - player_pos_z_draw) >= m_max_place_limit * ONE_PIXEL)
+		{
+			return { false, Item{} };
+		}
+		if (abs(mouse_y - player_pos_y_draw) >= m_max_place_limit * ONE_PIXEL)
+		{
+			return { false, Item{} };
+		}
 	}
 
 	// 破壊音

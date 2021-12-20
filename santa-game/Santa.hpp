@@ -17,7 +17,7 @@ private:
 	bool m_is_jump = false;
 
 	// ジャンプ初速度
-	const double jump_speed = 3.25;
+	const double jump_speed = 2.8;
 	// 縦方向の加速度
 	double m_y_acceleration = 9.8;
 	// 縦方向の速度

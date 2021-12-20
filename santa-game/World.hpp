@@ -12,6 +12,8 @@ private:
 
 	int m_angle = 1;
 
+	const double m_max_place_limit = 1.8;
+
 	vector<Item> m_items;
 
 	void m_load_world_data(int x, int y, int z);
