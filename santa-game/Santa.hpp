@@ -18,7 +18,7 @@ private:
 
 	// ジャンプ初速度
 	const double jump_speed = 2.8;
-	// 縦方向の加速度
+	// 縦方向の加速度 (9.8は初期値)
 	double m_y_acceleration = 9.8;
 	// 縦方向の速度
 	double m_y_speed = 0.0;

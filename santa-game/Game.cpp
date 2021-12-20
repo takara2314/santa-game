@@ -127,6 +127,13 @@ void Game::update()
 		m_changed_direction_time = Scene::Time();
 		m_child.change_direction_random();
 	}
+
+	// サンタ検知
+	if (m_child.detect_santa(m_santa.get_position(), m_world.collisions))
+	{
+		// Print << U"検知したよ！";
+		m_bgm.stop();
+	}
 }
 
 
