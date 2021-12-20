@@ -131,8 +131,16 @@ void Game::update()
 	// サンタ検知
 	if (m_child.detect_santa(m_santa.get_position(), m_world.collisions))
 	{
-		// Print << U"検知したよ！";
 		m_bgm.stop();
+	}
+
+	// プレゼント検知
+	if (m_child.detect_present(m_world.collisions, m_world.world_data))
+	{
+		for (int i = 0; i < 10; ++i)
+		{
+			Print << U"成功！";
+		}
 	}
 }
 
