@@ -31,116 +31,137 @@ void Game::update()
 	// ワールドデータを更新
 	m_world_data = m_world.world_data;
 
-	// プレイヤーの操作
-	if (KeyDown.pressed() || KeyS.pressed())
+	// ゲームオーバーまたはゲームクリアしたら操作できないように
+	if (!(m_gameovered || m_gamecleared))
 	{
-		m_santa.move(0, 4.0, m_collisions, m_world_data, m_items[3].walk_sound, m_angle);
-	}
-	if (KeyLeft.pressed() || KeyA.pressed())
-	{
-		m_santa.move(1, 4.0, m_collisions, m_world_data, m_items[3].walk_sound, m_angle);
-	}
-	if (KeyRight.pressed() || KeyD.pressed())
-	{
-		m_santa.move(2, 4.0, m_collisions, m_world_data, m_items[3].walk_sound, m_angle);
-	}
-	if (KeyUp.pressed() || KeyW.pressed())
-	{
-		m_santa.move(3, 4.0, m_collisions, m_world_data, m_items[3].walk_sound, m_angle);
-	}
-	if (KeySpace.pressed())
-	{
-		m_santa.jump(m_collisions);
-	}
-
-	// アングル変更
-	if (KeyLBracket.pressed())
-	{
-		m_santa.change_angle(m_angle, 1);
-		m_world.change_angle(1);
-		m_angle = 1;
-	}
-	if (KeyRBracket.pressed())
-	{
-		m_santa.change_angle(m_angle, 2);
-		m_world.change_angle(2);
-		m_angle = 2;
-	}
-
-	// 接地判定
-	m_santa.check_ground(m_collisions);
-
-	// 接地していなかったら落下
-	m_santa.move_y(m_collisions);
-
-	// ブロック操作
-	if (MouseR.pressed())
-	{
-		Point pos = m_correct_click_pos(Cursor::Pos());
-
-		// 現在選択しているアイテム
-		Item item = m_santa.get_inventory()[m_santa.inventory_selection].item;
-		// 置けたらアイテムを減らす
-		bool result = m_world.set_block(pos.x, pos.y, m_santa.get_position(), item);
-		if (result)
+		// プレイヤーの操作
+		if (KeyDown.pressed() || KeyS.pressed())
 		{
-			m_santa.remove_item(m_santa.inventory_selection, 1);
+			m_santa.move(0, 4.0, m_collisions, m_world_data, m_items[3].walk_sound, m_angle);
+		}
+		if (KeyLeft.pressed() || KeyA.pressed())
+		{
+			m_santa.move(1, 4.0, m_collisions, m_world_data, m_items[3].walk_sound, m_angle);
+		}
+		if (KeyRight.pressed() || KeyD.pressed())
+		{
+			m_santa.move(2, 4.0, m_collisions, m_world_data, m_items[3].walk_sound, m_angle);
+		}
+		if (KeyUp.pressed() || KeyW.pressed())
+		{
+			m_santa.move(3, 4.0, m_collisions, m_world_data, m_items[3].walk_sound, m_angle);
+		}
+		if (KeySpace.pressed())
+		{
+			m_santa.jump(m_collisions);
+		}
+
+		// アングル変更
+		if (KeyLBracket.pressed())
+		{
+			m_santa.change_angle(m_angle, 1);
+			m_world.change_angle(1);
+			m_angle = 1;
+		}
+		if (KeyRBracket.pressed())
+		{
+			m_santa.change_angle(m_angle, 2);
+			m_world.change_angle(2);
+			m_angle = 2;
+		}
+
+		// 接地判定
+		m_santa.check_ground(m_collisions);
+
+		// 接地していなかったら落下
+		m_santa.move_y(m_collisions);
+
+		// ブロック操作
+		if (MouseR.pressed())
+		{
+			Point pos = m_correct_click_pos(Cursor::Pos());
+
+			// 現在選択しているアイテム
+			Item item = m_santa.get_inventory()[m_santa.inventory_selection].item;
+			// 置けたらアイテムを減らす
+			bool result = m_world.set_block(pos.x, pos.y, m_santa.get_position(), item);
+			if (result)
+			{
+				m_santa.remove_item(m_santa.inventory_selection, 1);
+			}
+		}
+		if (MouseL.pressed())
+		{
+			Point pos = m_correct_click_pos(Cursor::Pos());
+
+			// 消せたらそのアイテムを付与する
+			auto [result, item] = m_world.remove_block(pos.x, pos.y, m_santa.get_position());
+			if (result)
+			{
+				m_santa.give_item(m_santa.inventory_selection, item, 1);
+			}
+		}
+
+		// インベントリ操作
+		if (Key1.pressed())
+		{
+			m_santa.inventory_selection = 0;
+		}
+		if (Key2.pressed())
+		{
+			m_santa.inventory_selection = 1;
+		}
+		if (Key3.pressed())
+		{
+			m_santa.inventory_selection = 2;
+		}
+		if (Key4.pressed())
+		{
+			m_santa.inventory_selection = 3;
+		}
+		if (Key5.pressed())
+		{
+			m_santa.inventory_selection = 4;
+		}
+
+		// 1秒～6秒ごとに視点変更
+		if (Scene::Time() - m_changed_direction_time >= Random(1.0, 6.0))
+		{
+			m_changed_direction_time = Scene::Time();
+			m_child.change_direction_random();
+		}
+
+		// サンタ検知
+		if (m_child.detect_santa(m_santa.get_position(), m_world.collisions))
+		{
+			m_gameovered = Scene::Time();
+			m_is_gameovered = true;
+			m_bgm.stop();
+		}
+
+		// プレゼント検知
+		if (m_child.detect_present(m_world.collisions, m_world.world_data))
+		{
+			m_gamecleared = Scene::Time();
+			m_is_gamecleared = true;
+
+			for (int i = 0; i < 10; ++i)
+			{
+				Print << U"成功！";
+			}
 		}
 	}
-	if (MouseL.pressed())
-	{
-		Point pos = m_correct_click_pos(Cursor::Pos());
 
-		// 消せたらそのアイテムを付与する
-		auto [result, item] = m_world.remove_block(pos.x, pos.y, m_santa.get_position());
-		if (result)
-		{
-			m_santa.give_item(m_santa.inventory_selection, item, 1);
-		}
+	// ゲームオーバーして一定時間経ったら
+	if (m_is_gameovered && m_gameovered + m_gameovered_wait <= Scene::Time())
+	{
+		changeScene(State::Title);
 	}
 
-	// インベントリ操作
-	if (Key1.pressed())
+	// ゲームクリアして一定時間経ったら
+	if (m_is_gamecleared && m_is_gamecleared + m_gamecleared_wait <= Scene::Time())
 	{
-		m_santa.inventory_selection = 0;
-	}
-	if (Key2.pressed())
-	{
-		m_santa.inventory_selection = 1;
-	}
-	if (Key3.pressed())
-	{
-		m_santa.inventory_selection = 2;
-	}
-	if (Key4.pressed())
-	{
-		m_santa.inventory_selection = 3;
-	}
-	if (Key5.pressed())
-	{
-		m_santa.inventory_selection = 4;
-	}
-
-	// 1秒～6秒ごとに視点変更
-	if (Scene::Time() - m_changed_direction_time >= Random(1.0, 6.0))
-	{
-		m_changed_direction_time = Scene::Time();
-		m_child.change_direction_random();
-	}
-
-	// サンタ検知
-	if (m_child.detect_santa(m_santa.get_position(), m_world.collisions))
-	{
-		m_bgm.stop();
-	}
-
-	// プレゼント検知
-	if (m_child.detect_present(m_world.collisions, m_world.world_data))
-	{
-		for (int i = 0; i < 10; ++i)
-		{
-			Print << U"成功！";
-		}
+		changeScene(State::Title);
 	}
 }
 
@@ -196,6 +217,28 @@ void Game::draw() const
 	// インベントリの描画
 	Inventory inventory = santa.get_inventory();
 	m_draw_inventory(inventory, santa.inventory_selection);
+
+	// ゲームオーバーして、一定時間経過するまでメッセージを表示
+	if (m_is_gameovered && m_gameovered + m_gameovered_wait > Scene::Time())
+	{
+		int opacity = 128 * (Scene::Time() - m_gameovered) / m_gameovered_wait;
+
+		Rect{ 0, 0, Scene::Width(), Scene::Height()}
+			.draw(Color(255, 0, 0, opacity));
+
+		m_font(U"ザマァw").draw(200, 200);
+	}
+
+	// ゲームクリアして、一定時間経過するまでメッセージを表示
+	if (m_is_gamecleared && m_gamecleared + m_gamecleared_wait > Scene::Time())
+	{
+		int opacity = 128 * (Scene::Time() - m_gameovered) / m_gameovered_wait;
+
+		Rect{ 0, 0, Scene::Width(), Scene::Height() }
+		.draw(Color(0, 255, 0, opacity));
+
+		m_font(U"クリア！").draw(200, 200);
+	}
 }
 
 

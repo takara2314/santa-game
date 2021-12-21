@@ -56,6 +56,24 @@ private:
 	// 前回の視点変更
 	double m_changed_direction_time = 0.0;
 
+	// ゲームオーバーした時間
+	double m_gameovered = 0.0;
+
+	// ゲームオーバーして何秒メッセージを表示するか
+	const int m_gameovered_wait = 3;
+
+	// ゲームオーバーしたか
+	double m_is_gameovered = false;
+
+	// ゲームクリアした時間
+	double m_gamecleared = 0.0;
+
+	// ゲームクリアして何秒メッセージを表示するか
+	const int m_gamecleared_wait = 3;
+
+	// ゲームクリアしたか
+	bool m_is_gamecleared = false;
+
 public:
 
 	Game(const InitData& init);
