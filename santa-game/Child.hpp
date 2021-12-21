@@ -12,9 +12,11 @@ class Child : public Human
 private:
 
 	// 検知する縦幅
-	const double m_detect_height = 1.0;
-	// 検知する横幅の長さ
-	const double m_detect_length = 4.0;
+	const double m_detect_height = 1.5;
+	// 検知する横幅の長さ (サンタ)
+	const double m_detect_length_santa = 7.0;
+	// 検知する横幅の長さ (プレゼント)
+	const double m_detect_length_present = 4.0;
 
 	bool m_detect_collison(int i, int axis, Collision collisions);
 

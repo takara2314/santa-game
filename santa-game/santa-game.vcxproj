@@ -157,7 +157,10 @@
     <Image Include="App\items\dirt.png" />
     <Image Include="App\items\grass.png" />
     <Image Include="App\items\present.png" />
-    <Image Include="App\santa.png" />
+    <Image Include="App\santa.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </Image>
     <Image Include="App\santa_front.png" />
   </ItemGroup>
   <ItemGroup>
@@ -309,10 +312,18 @@
     <None Include="App\example\toml\config.toml" />
     <None Include="App\example\toml\test.toml" />
     <None Include="App\example\zip\zip_test.zip" />
-    <None Include="App\world\0.csv" />
-    <None Include="App\world\1.csv" />
-    <None Include="App\world\2.csv" />
-    <None Include="App\world\3.csv" />
+    <None Include="App\world\0.csv">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="App\world\1.csv">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="App\world\2.csv">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </None>
+    <None Include="App\world\3.csv">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\shot.mp3" />
@@ -326,7 +337,12 @@
     <Media Include="App\se\walk_on_wood.mp3" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="App\001Shirokuma-Regular.otf" />
+    <Font Include="App\001Shirokuma-Regular.otf">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+    </Font>
     <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
     <Font Include="App\example\font\RocknRoll\RocknRollOne-Regular.ttf" />
   </ItemGroup>

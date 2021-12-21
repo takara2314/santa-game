@@ -1,5 +1,25 @@
 # include <Siv3D/Windows/Resource.hpp>
 
+Resource(001Shirokuma-Regular.otf)
+Resource(ground.png)
+Resource(santa.png)
+Resource(items/bed.png)
+Resource(items/brick.png)
+Resource(items/dirt.png)
+Resource(items/grass.png)
+Resource(items/present.png)
+Resource(se/touch_to_grass.mp3)
+Resource(se/touch_to_present.mp3)
+Resource(se/touch_to_stone.mp3)
+Resource(se/walk_on_brick.mp3)
+Resource(se/walk_on_grass.mp3)
+Resource(se/walk_on_wood.mp3)
+Resource(world/0.csv)
+Resource(world/1.csv)
+Resource(world/2.csv)
+Resource(world/3.csv)
+
+
 //////////////////////////////////////////////////////
 //
 //	Siv3D Engine Resources (DO NOT REMOVE)

@@ -178,7 +178,7 @@ bool Child::detect_santa(Vec3 player_position, Collision collisions)
 	switch (Human::direction)
 	{
 	case 0:
-		for (int i = Human::position.z - 1; i > Human::position.z - m_detect_length; --i)
+		for (int i = Human::position.z - 1; i > Human::position.z - m_detect_length_santa; --i)
 		{
 			if (LocalFunc::detected_event(Human::position, player_position, m_detect_height, i, 1))
 			{
@@ -192,7 +192,7 @@ bool Child::detect_santa(Vec3 player_position, Collision collisions)
 		break;
 
 	case 1:
-		for (int i = Human::position.x - 1; i > Human::position.x - m_detect_length; --i)
+		for (int i = Human::position.x - 1; i > Human::position.x - m_detect_length_santa; --i)
 		{
 			if (LocalFunc::detected_event(Human::position, player_position, m_detect_height, i, 0))
 			{
@@ -206,7 +206,7 @@ bool Child::detect_santa(Vec3 player_position, Collision collisions)
 		break;
 
 	case 2:
-		for (int i = Human::position.x + 1; i < Human::position.x + m_detect_length; ++i)
+		for (int i = Human::position.x + 1; i < Human::position.x + m_detect_length_santa; ++i)
 		{
 			if (LocalFunc::detected_event(Human::position, player_position, m_detect_height, i, 0))
 			{
@@ -220,7 +220,7 @@ bool Child::detect_santa(Vec3 player_position, Collision collisions)
 		break;
 
 	case 3:
-		for (int i = Human::position.z + 1; i < Human::position.z + m_detect_length; ++i)
+		for (int i = Human::position.z + 1; i < Human::position.z + m_detect_length_santa; ++i)
 		{
 			if (LocalFunc::detected_event(Human::position, player_position, m_detect_height, i, 1))
 			{
@@ -281,7 +281,7 @@ bool Child::detect_present(Collision collisions, WorldData world_data)
 	switch (Human::direction)
 	{
 	case 0:
-		for (int i = Human::position.z - 1; i > Human::position.z - m_detect_length; --i)
+		for (int i = Human::position.z - 1; i > Human::position.z - m_detect_length_present; --i)
 		{
 			if (LocalFunc::detected_event(Human::position, world_data, m_detect_height, i, 1))
 			{
@@ -295,7 +295,7 @@ bool Child::detect_present(Collision collisions, WorldData world_data)
 		break;
 
 	case 1:
-		for (int i = Human::position.x - 1; i > Human::position.x - m_detect_length; --i)
+		for (int i = Human::position.x - 1; i > Human::position.x - m_detect_length_present; --i)
 		{
 			if (LocalFunc::detected_event(Human::position, world_data, m_detect_height, i, 0))
 			{
@@ -309,7 +309,7 @@ bool Child::detect_present(Collision collisions, WorldData world_data)
 		break;
 
 	case 2:
-		for (int i = Human::position.x + 1; i < Human::position.x + m_detect_length; ++i)
+		for (int i = Human::position.x + 1; i < Human::position.x + m_detect_length_present; ++i)
 		{
 			if (LocalFunc::detected_event(Human::position, world_data, m_detect_height, i, 0))
 			{
@@ -323,7 +323,7 @@ bool Child::detect_present(Collision collisions, WorldData world_data)
 		break;
 
 	case 3:
-		for (int i = Human::position.z + 1; i < Human::position.z + m_detect_length; ++i)
+		for (int i = Human::position.z + 1; i < Human::position.z + m_detect_length_present; ++i)
 		{
 			if (LocalFunc::detected_event(Human::position, world_data, m_detect_height, i, 1))
 			{
