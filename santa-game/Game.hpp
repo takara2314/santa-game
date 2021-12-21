@@ -49,9 +49,11 @@ private:
 	// クリック位置補正
 	Point m_correct_click_pos(Point pos);
 
-	const Font m_font{ 50 };
+	const Font m_result_font{ 50 };
 
 	const Font m_item_font{ 16 };
+
+	const Font m_angle_font{ 18 };
 
 	// 前回の視点変更
 	double m_changed_direction_time = 0.0;

@@ -63,7 +63,7 @@ void World::change_angle(int angle)
 void World::draw(Vec3 player_pos)
 {
 	// デバッグ用 (ブロックとの境目を描画)
-	for (int i = 0; i < MAX_X; ++i)
+	/*for (int i = 0; i < MAX_X; ++i)
 	{
 		for (int j = 0; j < MAX_Y; ++j)
 		{
@@ -91,7 +91,7 @@ void World::draw(Vec3 player_pos)
 				}
 			}
 		}
-	}
+	}*/
 
 	// ブロックを描画
 	if (m_angle == 1)
@@ -248,9 +248,6 @@ bool World::set_block(int mouse_x, int mouse_y, Vec3 player_pos, Item& block)
 	{
 		return false;
 	}
-
-	// Print << U"click " << mouse_x << U" " << mouse_y;
-	Print << U"設置 " << x << U" " << y << U" " << z;
 
 	// 設置音
 	block.touch_sound.play();

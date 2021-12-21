@@ -159,21 +159,15 @@ bool Child::detect_santa(Vec3 player_position, Collision collisions)
 				case 0:
 					if (x == i && y == j && z == z_child)
 					{
-						// Print << U"いた！0";
 						return true;
 					}
-					// Print << U"0: (" << i << U", " << j << U", " << child_position.z << U")";
-					// Print << U"player: (" << player_position.x << U", " << player_position.y << U", " << player_position.z << U")";
 					break;
 
 				case 1:
 					if (z == i && y == j && x == x_child)
 					{
-						// Print << U"いた！1";
 						return true;
 					}
-					// Print << U"1: (" << child_position.x << U", " << i << U", " << j << U")";
-					// Print << U"player: (" << player_position.x << U", " << player_position.y << U", " << player_position.z << U")";
 					break;
 				}
 			}
@@ -184,12 +178,10 @@ bool Child::detect_santa(Vec3 player_position, Collision collisions)
 	switch (Human::direction)
 	{
 	case 0:
-		// Print << U"前方";
 		for (int i = Human::position.z - 1; i > Human::position.z - m_detect_length; --i)
 		{
 			if (LocalFunc::detected_event(Human::position, player_position, m_detect_height, i, 1))
 			{
-				// Print << U"ぺぺぺ";
 				return true;
 			}
 			if (m_detect_collison(i, 0, collisions))
@@ -200,12 +192,10 @@ bool Child::detect_santa(Vec3 player_position, Collision collisions)
 		break;
 
 	case 1:
-		// Print << U"右";
 		for (int i = Human::position.x - 1; i > Human::position.x - m_detect_length; --i)
 		{
 			if (LocalFunc::detected_event(Human::position, player_position, m_detect_height, i, 0))
 			{
-				// Print << U"あああ";
 				return true;
 			}
 			if (m_detect_collison(i, 1, collisions))
@@ -216,12 +206,10 @@ bool Child::detect_santa(Vec3 player_position, Collision collisions)
 		break;
 
 	case 2:
-		// Print << U"左";
 		for (int i = Human::position.x + 1; i < Human::position.x + m_detect_length; ++i)
 		{
 			if (LocalFunc::detected_event(Human::position, player_position, m_detect_height, i, 0))
 			{
-				// Print << U"いいい";
 				return true;
 			}
 			if (LocalFunc::detect_collison(i, 1, Human::position, collisions))
@@ -232,12 +220,10 @@ bool Child::detect_santa(Vec3 player_position, Collision collisions)
 		break;
 
 	case 3:
-		// Print << U"後方";
 		for (int i = Human::position.z + 1; i < Human::position.z + m_detect_length; ++i)
 		{
 			if (LocalFunc::detected_event(Human::position, player_position, m_detect_height, i, 1))
 			{
-				// Print << U"ううう";
 				return true;
 			}
 			if (LocalFunc::detect_collison(i, 0, Human::position, collisions))
@@ -276,21 +262,15 @@ bool Child::detect_present(Collision collisions, WorldData world_data)
 				case 0:
 					if (world_data[i][j][z_child].name == U"プレゼントボックス")
 					{
-						Print << U"いた！0";
 						return true;
 					}
-					// Print << U"0: (" << i << U", " << j << U", " << child_position.z << U")";
-					// Print << U"player: (" << player_position.x << U", " << player_position.y << U", " << player_position.z << U")";
 					break;
 
 				case 1:
 					if (world_data[x_child][j][i].name == U"プレゼントボックス")
 					{
-						Print << U"いた！1";
 						return true;
 					}
-					// Print << U"1: (" << child_position.x << U", " << i << U", " << j << U")";
-					// Print << U"player: (" << player_position.x << U", " << player_position.y << U", " << player_position.z << U")";
 					break;
 				}
 			}
@@ -301,12 +281,10 @@ bool Child::detect_present(Collision collisions, WorldData world_data)
 	switch (Human::direction)
 	{
 	case 0:
-		// Print << U"前方";
 		for (int i = Human::position.z - 1; i > Human::position.z - m_detect_length; --i)
 		{
 			if (LocalFunc::detected_event(Human::position, world_data, m_detect_height, i, 1))
 			{
-				// Print << U"ぺぺぺ";
 				return true;
 			}
 			if (m_detect_collison(i, 0, collisions))
@@ -317,12 +295,10 @@ bool Child::detect_present(Collision collisions, WorldData world_data)
 		break;
 
 	case 1:
-		// Print << U"右";
 		for (int i = Human::position.x - 1; i > Human::position.x - m_detect_length; --i)
 		{
 			if (LocalFunc::detected_event(Human::position, world_data, m_detect_height, i, 0))
 			{
-				// Print << U"あああ";
 				return true;
 			}
 			if (m_detect_collison(i, 1, collisions))
@@ -333,12 +309,10 @@ bool Child::detect_present(Collision collisions, WorldData world_data)
 		break;
 
 	case 2:
-		// Print << U"左";
 		for (int i = Human::position.x + 1; i < Human::position.x + m_detect_length; ++i)
 		{
 			if (LocalFunc::detected_event(Human::position, world_data, m_detect_height, i, 0))
 			{
-				// Print << U"いいい";
 				return true;
 			}
 			if (m_detect_collison(i, 1, collisions))
@@ -349,12 +323,10 @@ bool Child::detect_present(Collision collisions, WorldData world_data)
 		break;
 
 	case 3:
-		// Print << U"後方";
 		for (int i = Human::position.z + 1; i < Human::position.z + m_detect_length; ++i)
 		{
 			if (LocalFunc::detected_event(Human::position, world_data, m_detect_height, i, 1))
 			{
-				// Print << U"ううう";
 				return true;
 			}
 			if (m_detect_collison(i, 0, collisions))

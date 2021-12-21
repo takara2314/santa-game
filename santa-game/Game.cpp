@@ -144,11 +144,6 @@ void Game::update()
 		{
 			m_gamecleared = Scene::Time();
 			m_is_gamecleared = true;
-
-			for (int i = 0; i < 10; ++i)
-			{
-				Print << U"成功！";
-			}
 		}
 	}
 
@@ -161,6 +156,7 @@ void Game::update()
 	// ゲームクリアして一定時間経ったら
 	if (m_is_gamecleared && m_is_gamecleared + m_gamecleared_wait <= Scene::Time())
 	{
+		m_bgm.stop();
 		changeScene(State::Title);
 	}
 }
@@ -221,23 +217,31 @@ void Game::draw() const
 	// ゲームオーバーして、一定時間経過するまでメッセージを表示
 	if (m_is_gameovered && m_gameovered + m_gameovered_wait > Scene::Time())
 	{
-		int opacity = 128 * (Scene::Time() - m_gameovered) / m_gameovered_wait;
+		int opacity = 255 * (Scene::Time() - m_gameovered) / m_gameovered_wait;
+		opacity = Min(255, opacity);
 
 		Rect{ 0, 0, Scene::Width(), Scene::Height()}
 			.draw(Color(255, 0, 0, opacity));
 
-		m_font(U"ザマァw").draw(200, 200);
+		m_result_font(U"失敗…").drawAt(
+			Scene::Center().x,
+			Scene::Center().x - 100
+		);
 	}
 
 	// ゲームクリアして、一定時間経過するまでメッセージを表示
 	if (m_is_gamecleared && m_gamecleared + m_gamecleared_wait > Scene::Time())
 	{
-		int opacity = 128 * (Scene::Time() - m_gameovered) / m_gameovered_wait;
+		int opacity = 255 * (Scene::Time() - m_gamecleared) / m_gamecleared_wait;
+		opacity = Min(255, opacity);
 
 		Rect{ 0, 0, Scene::Width(), Scene::Height() }
 		.draw(Color(0, 255, 0, opacity));
 
-		m_font(U"クリア！").draw(200, 200);
+		m_result_font(U"成功！").drawAt(
+			Scene::Center().x,
+			Scene::Center().x - 100
+		);
 	}
 }
 
@@ -257,7 +261,13 @@ void Game::m_angle1() const
 	// サンタ
 	santa.draw(1);
 
-	m_font(U"アングル1").draw(Vec2{50, 50});
+	m_angle_font(U"XYカメラ").drawAt(
+		Vec2{
+			Scene::Width() - 60,
+			200
+		},
+		Color(128, 128, 128)
+	);
 }
 
 
@@ -276,7 +286,13 @@ void Game::m_angle2() const
 	// サンタ
 	santa.draw(2);
 
-	m_font(U"アングル2").draw(Vec2{ 50, 50 });
+	m_angle_font(U"ZYカメラ").drawAt(
+		Vec2{
+			Scene::Width() - 60,
+			200,
+		},
+		Color(128, 128, 128)
+	);
 }
 
 

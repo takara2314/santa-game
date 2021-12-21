@@ -8,7 +8,7 @@ Title::Title(const InitData& init)
 	: IScene(init)
 {
 	// ウィンドウの幅
-	Window::Resize(640, 480);
+	Window::Resize(720, 480);
 
 	// 背景色を設定
 	Scene::SetBackground(Color(239, 68, 68));

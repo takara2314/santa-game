@@ -89,8 +89,6 @@ void Santa::move(int direction, double quantity, Collision collisions, WorldData
 		return;
 	}
 
-	Print << U"現在座標: " << Unicode::Widen(format("({:5.2f}, {:5.2f}, {:5.2f})", position.x, position.y, position.z));
-
 	size_t x = static_cast<size_t>(position.x + 0.5);
 	size_t y = static_cast<size_t>(position.y);
 	size_t z = static_cast<size_t>(position.z + 0.5);
@@ -131,16 +129,13 @@ void Santa::move(int direction, double quantity, Collision collisions, WorldData
 	bool collision_underfoot = collisions[x][y][z];
 
 	size_t y_overhead = Min(static_cast<size_t>(position.y + Human::height), static_cast<size_t>(MAX_Y - 1));
-	// Print << U"移動先: " << Unicode::Widen(format("({:d}, {:d}, {:d})", static_cast<int>(x), static_cast<int>(y), static_cast<int>(z)));
-
+	
 	bool collision_overhead = collisions[x][y_overhead][z];
 
 	if (collision_underfoot || collision_overhead)
 	{
 		return;
 	}
-
-	// Print << U"";
 
 	// 歩行音
 	if (y > 0 && world_data[x][y - 1][z].name != U"空気")
